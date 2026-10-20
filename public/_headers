@@ -3,3 +3,7 @@ https://:project.pages.dev/*
 
 https://:version.:project.pages.dev/*
 	X-Robots-Tag: noindex
+
+# Indirizzo provvisorio su Cloudflare Workers: non indicizzarlo
+https://:version.:subdomain.workers.dev/*
+	X-Robots-Tag: noindex

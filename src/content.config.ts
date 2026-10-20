@@ -84,6 +84,8 @@ const persone = defineCollection({
     ordine: z.number().nullish().transform((v) => v ?? 99),
     bio: testo,
     foto: testo,
+    // In evidenza: esce dalla griglia e si mostra in grande, con la biografia visibile.
+    evidenza: z.boolean().nullish().transform((v) => !!v),
   }),
 });
 

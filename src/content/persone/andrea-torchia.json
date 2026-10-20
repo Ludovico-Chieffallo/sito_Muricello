@@ -4,5 +4,6 @@
   "gruppo": "associazione",
   "ordine": 2,
   "bio": "",
-  "foto": ""
+  "foto": "",
+  "evidenza": false
 }

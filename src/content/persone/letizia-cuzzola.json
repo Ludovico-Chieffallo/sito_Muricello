@@ -4,5 +4,6 @@
   "gruppo": "giuria-letteraria",
   "ordine": 3,
   "bio": "",
-  "foto": "/media/persone/letizia-cuzzola.jpg"
+  "foto": "/media/persone/letizia-cuzzola.jpg",
+  "evidenza": false
 }

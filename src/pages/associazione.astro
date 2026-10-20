@@ -1,10 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import GrigliaPersone from '../components/GrigliaPersone.astro';
+import PersonaEvidenza from '../components/PersonaEvidenza.astro';
 import sito from '../data/sito.json';
 import { persone } from '../lib/dati';
 
-const associazione = await persone('associazione');
+const tuttiAssociazione = await persone('associazione');
+const associazione = tuttiAssociazione.filter((p) => !p.evidenza);
+const inEvidenza = tuttiAssociazione.filter((p) => p.evidenza);
 const giuria = await persone('giuria-letteraria');
 const giuriaPoesia = await persone('giuria-poesia');
 ---
@@ -55,6 +58,7 @@ const giuriaPoesia = await persone('giuria-poesia');
       <p class="sommesso">Seleziona una persona per leggere la sua scheda.</p>
     </div>
     <GrigliaPersone persone={associazione} />
+    {inEvidenza.map((p) => <PersonaEvidenza persona={p} />)}
     {sito.collaboratori && <p class="sommesso" style="margin-top: 48px; max-width: 40em; font-size: 17px;">{sito.collaboratori}</p>}
   </section>
 

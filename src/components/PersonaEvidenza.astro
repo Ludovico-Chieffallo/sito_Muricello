@@ -1,0 +1,19 @@
+---
+// Una persona in evidenza (per esempio il presidente): foto grande e biografia visibile.
+import Foto from './Foto.astro';
+import { inline } from '../lib/testo';
+import type { Persona } from '../lib/dati';
+
+interface Props { persona: Persona }
+const { persona: p } = Astro.props;
+---
+<article class="evidenza" aria-labelledby={`evidenza-${p.id}`}>
+  <div class="evidenza__foto">
+    <Foto src={p.foto} alt={p.nome} nome={p.nome} />
+  </div>
+  <div class="evidenza__testo">
+    {p.ruolo && <p class="etichetta">{p.ruolo}</p>}
+    <h3 id={`evidenza-${p.id}`}>{p.nome}</h3>
+    {p.bio && <p class="evidenza__bio" set:html={inline(p.bio)} />}
+  </div>
+</article>

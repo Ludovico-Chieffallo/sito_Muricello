@@ -257,6 +257,9 @@ content:
       - name: foto
         label: Foto
         type: image
+      - name: evidenza
+        label: In evidenza (si mostra in grande sotto l'elenco, con la biografia)
+        type: boolean
 
   # --------------------------------------------------------- Impostazioni
   - name: sito

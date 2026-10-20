@@ -4,5 +4,6 @@
   "gruppo": "giuria-letteraria",
   "ordine": 4,
   "bio": "",
-  "foto": "/media/persone/ippolita-luzzo.jpg"
+  "foto": "/media/persone/ippolita-luzzo.jpg",
+  "evidenza": false
 }

@@ -15,6 +15,8 @@ const premio = z.object({
   ruolo: testo,
   motivazione: testo,
   foto: testo,
+  // Copertina del libro premiato: se c'è, si mostra intera al posto della foto.
+  copertina: testo,
 });
 
 const finalista = z.object({

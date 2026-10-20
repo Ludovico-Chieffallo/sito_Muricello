@@ -116,6 +116,9 @@ content:
           - name: foto
             label: Foto
             type: image
+          - name: copertina
+            label: Copertina del libro (se c'è, si mostra intera al posto della foto)
+            type: image
       - name: citazione
         label: Citazione
         type: object

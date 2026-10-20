@@ -63,7 +63,13 @@ const descrizione = e.racconto
       <div class="griglia" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 56px 48px;">
         {e.premi.map((p) => (
           <article class="premiato">
-            <Foto src={p.foto} alt={p.nome} nome={p.nome} />
+            {p.copertina ? (
+              <div class="premiato__libro">
+                <img src={miniatura(p.copertina)} alt={`Copertina di ${semplice(p.opera || p.nome)}`} loading="lazy" decoding="async" />
+              </div>
+            ) : (
+              <Foto src={p.foto} alt={p.nome} nome={p.nome} />
+            )}
             <h3>{p.sezione}</h3>
             <p class="nome">{p.nome}</p>
             {(p.opera || p.editore || p.ruolo) && (

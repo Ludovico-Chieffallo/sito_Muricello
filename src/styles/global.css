@@ -264,6 +264,8 @@ a.riga-edizione:hover { color: var(--inchiostro); background: linear-gradient(va
 .premiato .nome { margin-top: 8px; }
 .premiato .opera { margin-top: 10px; }
 .premiato .motivazione { margin-top: 16px; font-size: 17px; }
+.premiato__libro { aspect-ratio: 4 / 5; background: var(--pietra-scura); display: flex; align-items: center; justify-content: center; padding: 9% 0; }
+.premiato__libro img { height: 100%; width: auto; max-width: 80%; object-fit: contain; }
 @media (max-width: 640px) {
   /* Sul telefono i riquadri vuoti delle foto mancanti occuperebbero troppo spazio */
   .premiato .foto--vuota { display: none; }

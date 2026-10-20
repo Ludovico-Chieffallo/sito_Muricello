@@ -111,7 +111,10 @@ ul.lista-pulita, ol.lista-pulita { list-style: none; padding: 0; }
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
   gap: 12px 40px; padding-block: 18px;
 }
-.marchio { display: flex; flex-direction: column; gap: 2px; padding: 4px 0; color: var(--inchiostro); text-decoration: none; }
+.marchio { display: flex; align-items: center; gap: 14px; padding: 4px 0; color: var(--inchiostro); text-decoration: none; }
+.marchio__cavallo { width: auto; height: 50px; }
+.marchio__testo { display: flex; flex-direction: column; gap: 2px; }
+@media (max-width: 400px) { .marchio__cavallo { height: 40px; } .marchio { gap: 10px; } }
 .marchio:hover { color: var(--inchiostro); }
 .marchio__sopra { font-size: 14px; color: var(--grigio); letter-spacing: 0.02em; }
 .marchio__nome { font-family: var(--titoli); font-size: 30px; font-weight: 500; line-height: 1; }

@@ -23,7 +23,8 @@ const titoloCompleto = titolo
   ? `${titolo} | Premio Muricello`
   : "Premio Muricello | Associazione culturale Muricello, San Mango d'Aquino";
 const canonico = new URL(Astro.url.pathname, Astro.site).href;
-const immagineAssoluta = immagine ? new URL(immagine, Astro.site).href : '';
+// Senza un'immagine specifica, le anteprime su WhatsApp e Facebook mostrano il logo.
+const immagineAssoluta = new URL(immagine || '/og-muricello.jpg', Astro.site).href;
 ---
 <!doctype html>
 <html lang="it">

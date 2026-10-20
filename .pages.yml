@@ -70,6 +70,9 @@ content:
         label: Ordinale (es. Quattordicesima)
         type: string
         required: true
+      - name: periodo
+        label: Periodo degli eventi, se va oltre l'anno (es. 2024/25)
+        type: string
       - name: data
         label: Data (es. 25 luglio 2026)
         type: string
@@ -203,6 +206,9 @@ content:
         label: Data
         type: date
         required: true
+      - name: edizione
+        label: Anno dell'edizione (solo se diverso dall'anno della data, es. 2024 per un evento di gennaio 2025)
+        type: number
       - name: luogo
         label: Luogo
         type: string

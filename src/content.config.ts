@@ -40,6 +40,8 @@ const edizioni = defineCollection({
     anno: z.number().int(),
     numero: z.string(),
     ordinale: z.string(),
+    // Periodo degli eventi, se va oltre l'anno del Premio (es. "2024/25").
+    periodo: testo,
     data: testo,
     luogo: testo,
     tema: testo,
@@ -64,6 +66,8 @@ const eventi = defineCollection({
   schema: z.object({
     titolo: z.string(),
     data: z.coerce.date(),
+    // Anno dell'edizione a cui appartiene l'evento; se manca, vale l'anno della data.
+    edizione: z.number().int().nullish(),
     luogo: testo,
     descrizione: testo,
     locandina: testo,

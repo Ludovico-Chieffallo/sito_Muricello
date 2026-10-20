@@ -11,7 +11,7 @@ export async function edizioni(): Promise<Edizione[]> {
   return voci.map((v) => v.data).sort((a, b) => b.anno - a.anno);
 }
 
-/** Tutti gli eventi, dal più recente. */
+/** Tutti gli eventi, in ordine di data: ogni edizione si legge dal primo appuntamento all'ultimo. */
 export async function eventi(): Promise<Evento[]> {
   const voci = await getCollection('eventi');
   return voci
@@ -19,9 +19,9 @@ export async function eventi(): Promise<Evento[]> {
       ...v.data,
       id: v.id,
       slug: slugEvento(v.id),
-      anno: Number(v.data.data.toISOString().slice(0, 4)),
+      anno: v.data.edizione ?? Number(v.data.data.toISOString().slice(0, 4)),
     }))
-    .sort((a, b) => b.data.getTime() - a.data.getTime());
+    .sort((a, b) => a.data.getTime() - b.data.getTime());
 }
 
 export async function persone(gruppo: Persona['gruppo']): Promise<Persona[]> {

@@ -14,7 +14,7 @@ const { e } = Astro.props;
 const tutte = await edizioni();
 const album = (await eventi()).filter((ev) => ev.anno === e.anno && ev.foto.length > 0);
 ---
-<Base titolo={`Gallery ${e.anno}`} attivo="gallery" descrizione={`Le fotografie della ${e.ordinale.toLowerCase()} edizione del Premio Muricello, ${e.anno}.`}>
+<Base titolo={`Gallery ${e.periodo || e.anno}`} attivo="gallery" descrizione={`Le fotografie della ${e.ordinale.toLowerCase()} edizione del Premio Muricello, ${e.anno}.`}>
   <div class="contenitore" style="padding-bottom: var(--spazio-sezione);">
     <nav class="percorso" aria-label="Percorso">
       <a href="/gallery/">Gallery</a>
@@ -26,7 +26,7 @@ const album = (await eventi()).filter((ev) => ev.anno === e.anno && ev.foto.leng
     <section class="testa-edizione" aria-labelledby="titolo-anno">
       <div class="numerale numerale--grande" aria-hidden="true">{e.numero}</div>
       <div class="testa-edizione__testo">
-        <h1 id="titolo-anno" style="font-size: clamp(44px, 5.4vw, 76px);">Gallery {e.anno}</h1>
+        <h1 id="titolo-anno" style="font-size: clamp(44px, 5.4vw, 76px);">Gallery {e.periodo || e.anno}</h1>
         <p class="sommesso" style="margin-top: 14px;">Un album per ogni evento della {e.ordinale.toLowerCase()} edizione.</p>
       </div>
     </section>

@@ -18,7 +18,7 @@ const { e, successiva, precedente } = Astro.props;
 const tutte = await edizioni();
 const lista = (await eventi()).filter((ev) => ev.anno === e.anno);
 ---
-<Base titolo={`Eventi ${e.anno}`} attivo="eventi" descrizione={`Gli eventi della ${e.ordinale.toLowerCase()} edizione del Premio Muricello, ${e.anno}: locandine e descrizioni.`}>
+<Base titolo={`Eventi ${e.periodo || e.anno}`} attivo="eventi" descrizione={`Gli eventi della ${e.ordinale.toLowerCase()} edizione del Premio Muricello, ${e.anno}: locandine e descrizioni.`}>
   <div class="contenitore">
     <nav class="percorso" aria-label="Percorso">
       <a href="/eventi/">Eventi</a>
@@ -30,7 +30,7 @@ const lista = (await eventi()).filter((ev) => ev.anno === e.anno);
     <section class="testa-edizione" aria-labelledby="titolo-anno">
       <div class="numerale numerale--grande" aria-hidden="true">{e.numero}</div>
       <div class="testa-edizione__testo">
-        <h1 id="titolo-anno" style="font-size: clamp(44px, 5.4vw, 76px);">Eventi {e.anno}</h1>
+        <h1 id="titolo-anno" style="font-size: clamp(44px, 5.4vw, 76px);">Eventi {e.periodo || e.anno}</h1>
         <p class="sommesso" style="margin-top: 14px;">Gli appuntamenti della {e.ordinale.toLowerCase()} edizione del Premio Muricello.</p>
       </div>
     </section>

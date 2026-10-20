@@ -16,8 +16,8 @@ const corpo = blocchi(news.testo);
     </header>
 
     {news.immagine && (
-      <figure class="contenitore">
-        <img class="foto" src={news.immagine} alt={news.didascalia} style="aspect-ratio: 16 / 9;" />
+      <figure class="contenitore contenitore--stretto">
+        <img class="foto" src={news.immagine} alt={news.didascalia} style="max-height: 80vh; object-fit: cover;" />
         {news.didascalia && <figcaption>{news.didascalia}</figcaption>}
       </figure>
     )}

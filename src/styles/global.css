@@ -221,7 +221,7 @@ figure figcaption { margin-top: 14px; font-size: 16px; line-height: 1.5; color: 
 .notizia-banda h3 { margin-top: 18px; font-family: var(--titoli); font-weight: 500; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12; color: #F3EEE4; }
 .notizia-banda p.sommario { margin-top: 20px; max-width: 32em; color: #DDD8CC; }
 .notizia-banda .bottone { margin-top: 30px; }
-.notizia-banda img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.notizia-banda img { width: 100%; max-height: 520px; object-fit: cover; object-position: 50% 20%; }
 
 /* ---------- Righe delle edizioni ---------- */
 

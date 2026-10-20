@@ -383,6 +383,7 @@ button.scheda:hover .scheda__invito { text-decoration: underline; text-underline
 .bio h3 { font-family: var(--titoli); font-size: clamp(32px, 3vw, 42px); line-height: 1.1; font-weight: 500; }
 .bio .ruolo { margin-top: 8px; color: var(--patina); font-weight: 500; }
 .bio .testo { margin-top: 20px; }
+.bio .testo p + p, .evidenza__bio p + p { margin-top: 14px; }
 .bio .bottone { margin-top: 28px; }
 
 .evidenza { margin-top: 64px; padding-top: 40px; border-top: 2px solid var(--inchiostro); display: flex; flex-wrap: wrap; gap: 32px 64px; align-items: flex-start; }

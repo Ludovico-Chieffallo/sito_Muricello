@@ -2,7 +2,7 @@
 // Schede delle persone: foto, nome e ruolo. Se c'è una biografia,
 // la scheda si apre in una finestra con il testo completo.
 import Foto from './Foto.astro';
-import { inline, miniatura } from '../lib/testo';
+import { blocchi, miniatura } from '../lib/testo';
 import type { Persona } from '../lib/dati';
 
 interface Props { persone: Persona[] }
@@ -36,7 +36,7 @@ const { persone } = Astro.props;
       <div class="bio__testo">
         <h3 id={`bio-${p.id}-nome`}>{p.nome}</h3>
         {p.ruolo && <p class="ruolo">{p.ruolo}</p>}
-        <p class="testo" set:html={inline(p.bio)} />
+        <div class="testo">{blocchi(p.bio).map((b) => <p set:html={b.html} />)}</div>
         <button type="button" class="bottone bottone--bordo" data-chiudi>Chiudi la scheda</button>
       </div>
     </div>

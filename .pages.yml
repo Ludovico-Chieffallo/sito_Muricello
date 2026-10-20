@@ -252,7 +252,7 @@ content:
         label: Ordine di apparizione (1 = primo)
         type: number
       - name: bio
-        label: Biografia (se vuota, la scheda non si apre)
+        label: Biografia (paragrafi separati da una riga vuota; se vuota, la scheda non si apre)
         type: text
       - name: foto
         label: Foto

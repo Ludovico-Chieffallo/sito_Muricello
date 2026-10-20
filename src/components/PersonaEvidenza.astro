@@ -1,7 +1,7 @@
 ---
 // Una persona in evidenza (per esempio il presidente): foto grande e biografia visibile.
 import Foto from './Foto.astro';
-import { inline } from '../lib/testo';
+import { blocchi } from '../lib/testo';
 import type { Persona } from '../lib/dati';
 
 interface Props { persona: Persona }
@@ -14,6 +14,6 @@ const { persona: p } = Astro.props;
   <div class="evidenza__testo">
     {p.ruolo && <p class="etichetta">{p.ruolo}</p>}
     <h3 id={`evidenza-${p.id}`}>{p.nome}</h3>
-    {p.bio && <p class="evidenza__bio" set:html={inline(p.bio)} />}
+    {p.bio && <div class="evidenza__bio">{blocchi(p.bio).map((b) => <p set:html={b.html} />)}</div>}
   </div>
 </article>

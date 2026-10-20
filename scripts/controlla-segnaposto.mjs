@@ -2,8 +2,10 @@
 // e le persone senza biografia. Da lanciare prima di pubblicare: npm run controlla
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const radice = new URL('..', import.meta.url).pathname;
+// fileURLToPath e non .pathname: i percorsi con spazi resterebbero scritti con %20.
+const radice = fileURLToPath(new URL('..', import.meta.url));
 const cartelle = ['src/content', 'src/data'];
 const trovati = [];
 const senzaBio = [];

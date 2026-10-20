@@ -18,8 +18,11 @@ const { e, successiva, precedente } = Astro.props;
 
 const tutte = await edizioni();
 const eventiAnno = (await eventi()).filter((ev) => ev.anno === e.anno);
-// Foto dagli eventi più recenti dell'edizione: di solito l'ultimo è il Premio.
-const fotoAnno = [...eventiAnno].reverse().flatMap((ev) => ev.foto).slice(0, 3);
+// Foto: prima gli eventi dell'anno del Premio (le serate), poi quelli dell'anno dopo.
+const annoDi = (ev: { data: Date }) => ev.data.getFullYear();
+const fotoAnno = [...eventiAnno.filter((ev) => annoDi(ev) === e.anno), ...eventiAnno.filter((ev) => annoDi(ev) !== e.anno)]
+  .flatMap((ev) => ev.foto)
+  .slice(0, 3);
 const compilata = e.premi.length > 0 || !!e.racconto;
 
 const descrizione = e.racconto

@@ -16,7 +16,7 @@ const albumDi = (anno: number) => tutti.filter((e) => e.anno === anno && e.foto.
     <ul class="lista-pulita griglia" style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 48px 32px;">
       {anni.map((a) => {
         const album = albumDi(a.anno);
-        const copertina = album[0]?.foto[0];
+        const copertina = album[album.length - 1]?.foto[0];
         return (
           <li>
             <a class="album" href={`/gallery/${a.anno}/`}>

@@ -5,8 +5,8 @@
   "type": "module",
   "description": "Sito dell'Associazione culturale Muricello e del Premio Muricello",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "node scripts/miniature.mjs && astro dev",
+    "build": "node scripts/miniature.mjs && astro build",
     "preview": "astro preview",
     "controlla": "node scripts/controlla-segnaposto.mjs"
   },
@@ -17,6 +17,7 @@
     "@astrojs/sitemap": "3.7.4",
     "@fontsource-variable/bodoni-moda": "5.3.0",
     "@fontsource/spectral": "5.3.0",
-    "astro": "7.3.5"
+    "astro": "7.3.5",
+    "sharp": "0.35.5"
   }
 }

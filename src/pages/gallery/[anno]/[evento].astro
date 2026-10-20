@@ -1,7 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import { eventi, type Evento } from '../../../lib/dati';
-import { inline, semplice, dataLunga } from '../../../lib/testo';
+import { inline, semplice, dataLunga, miniatura } from '../../../lib/testo';
 
 export async function getStaticPaths() {
   const tutti = await eventi();
@@ -40,7 +40,7 @@ const titolo = semplice(ev.titolo);
       {ev.foto.map((f, i) => (
         <li>
           <a href={f} data-indice={i} aria-label={`Apri la fotografia ${i + 1} di ${ev.foto.length}`}>
-            <img src={f} alt="" loading={i < 6 ? 'eager' : 'lazy'} decoding="async" />
+            <img src={miniatura(f)} alt="" width="800" height="533" loading={i < 6 ? 'eager' : 'lazy'} decoding="async" />
           </a>
         </li>
       ))}

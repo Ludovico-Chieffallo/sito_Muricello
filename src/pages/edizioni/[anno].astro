@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Foto from '../../components/Foto.astro';
 import BarraAnni from '../../components/BarraAnni.astro';
 import { edizioni, eventi, type Edizione } from '../../lib/dati';
-import { inline, semplice } from '../../lib/testo';
+import { inline, semplice, miniatura } from '../../lib/testo';
 
 export async function getStaticPaths() {
   const tutte = await edizioni();
@@ -97,7 +97,7 @@ const descrizione = e.racconto
           {e.finalisti.map((f) => (
             <li class="libro filetto">
               {f.copertina
-                ? <img class="libro__copertina" src={f.copertina} alt={`Copertina di ${f.opera}`} loading="lazy" />
+                ? <img class="libro__copertina" src={miniatura(f.copertina)} alt={`Copertina di ${f.opera}`} loading="lazy" />
                 : <div class="libro__copertina" aria-hidden="true"></div>}
               <div class="libro__testo">
                 <div class="autore">{f.autore}{f.vincitore && <span class="marchio-vincitore">Vincitore</span>}</div>
@@ -148,7 +148,7 @@ const descrizione = e.racconto
           </div>
         </div>
         <div class="griglia" style="gap: 16px;">
-          {fotoAnno.map((f) => <img class="foto" src={f} alt="" loading="lazy" style="aspect-ratio: 4 / 3;" />)}
+          {fotoAnno.map((f) => <img class="foto" src={miniatura(f)} alt="" loading="lazy" style="aspect-ratio: 4 / 3;" />)}
         </div>
       </div>
     </section>

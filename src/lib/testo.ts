@@ -76,3 +76,7 @@ const numeri = [
   'ventisei', 'ventisette', 'ventotto', 'ventinove', 'trenta',
 ];
 export const inLettere = (n: number) => numeri[n] ?? String(n);
+
+/** La miniatura (800 px) di una foto in /media, creata da scripts/miniature.mjs. */
+export const miniatura = (src = '') =>
+  src.startsWith('/media/') && !src.startsWith('/media/_mini/') ? src.replace('/media/', '/media/_mini/') : src;

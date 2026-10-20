@@ -15,7 +15,7 @@ Tutti i testi del sito stanno in file separati dal codice. Per aggiornare il sit
 | Persone e giurie | `src/content/persone/<nome>.json` | `gruppo`: `associazione`, `giuria-letteraria` o `giuria-poesia`. |
 | Ultima notizia | `src/data/news.json` | C'è una sola notizia: la nuova sostituisce la precedente. |
 | Impostazioni | `src/data/sito.json` | Contatti, numeri del Premio, foto della home e delle pagine. |
-| Foto e locandine | `public/media/` | Nei contenuti si scrive il percorso, es. `/media/iorfida.jpg`. |
+| Foto e locandine | `public/media/` | Nei contenuti si scrive il percorso, es. `/media/iorfida.jpg`. Le miniature per le griglie si creano da sole a ogni build (`scripts/miniature.mjs`). |
 
 Regole di scrittura nei testi:
 

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { edizioni, eventi } from '../../lib/dati';
+import { miniatura } from '../../lib/testo';
 
 const anni = await edizioni();
 const tutti = await eventi();
@@ -20,7 +21,7 @@ const albumDi = (anno: number) => tutti.filter((e) => e.anno === anno && e.foto.
           <li>
             <a class="album" href={`/gallery/${a.anno}/`}>
               {copertina
-                ? <img class="foto" src={copertina} alt="" loading="lazy" style="aspect-ratio: 4 / 3;" />
+                ? <img class="foto" src={miniatura(copertina)} alt="" loading="lazy" style="aspect-ratio: 4 / 3;" />
                 : <span class="foto" aria-hidden="true" style="display: block; aspect-ratio: 4 / 3; background: var(--pietra-tenue);"></span>}
               <span style="display: flex; align-items: baseline; gap: 14px; margin-top: 14px;">
                 <span class="numerale" aria-hidden="true" style="font-size: 32px; line-height: 1;">{a.numero}</span>

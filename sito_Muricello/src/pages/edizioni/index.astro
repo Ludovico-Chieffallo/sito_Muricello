@@ -1,0 +1,159 @@
+---
+import Base from '../../layouts/Base.astro';
+import { edizioni, compilata } from '../../lib/dati';
+import { inLettere } from '../../lib/testo';
+
+const tutte = await edizioni();
+const ultima = tutte[0];
+const altre = tutte.slice(1);
+const compilate = altre.filter(compilata);
+const daCompilare = altre.filter((e) => !compilata(e));
+
+const cerca = (e: (typeof tutte)[number]) =>
+  [
+    e.numero, e.anno, e.tema, e.racconto,
+    ...e.premi.flatMap((p) => [p.sezione, p.nome, p.opera, p.editore, p.ruolo]),
+    ...e.finalisti.flatMap((f) => [f.autore, f.opera, f.editore]),
+  ]
+    .join(' ')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/\*/g, '');
+
+const primo = tutte[tutte.length - 1].anno;
+const totale = `${inLettere(tutte.length).replace(/^./, (c) => c.toUpperCase())} edizioni, dal ${primo} al ${ultima.anno}.`;
+---
+<Base titolo="Le edizioni" attivo="edizioni" descrizione={`Tutte le edizioni del Premio Muricello dal ${primo}: premio letterario, premio per l'impegno civile e premio di poesia.`}>
+  <div class="contenitore">
+    <section class="affiancati affiancati--fondo" style="padding-block: clamp(56px, 8vw, 104px) clamp(40px, 5vw, 64px); gap: 32px 88px;" aria-labelledby="titolo-edizioni">
+      <div class="colonna-ampia" style="flex-basis: 520px;">
+        <h1 id="titolo-edizioni" class="titolo-pagina">Le edizioni</h1>
+        <p class="introduzione" style="margin-top: 24px;">Ogni anno dal {primo}: il Premio letterario, il Premio Muricello per l'impegno civile e, dal 2026, il Premio Muricello Poesia.</p>
+      </div>
+      <div class="ricerca" style="flex: 1 1 380px; min-width: 0;">
+        <label for="cerca">Cerca un nome, un libro o un anno</label>
+        <input id="cerca" type="search" placeholder="Per esempio Iorfida, Gioffrè, 2024" autocomplete="off" />
+        <p id="esito" aria-live="polite" data-iniziale={totale}>{totale}</p>
+      </div>
+    </section>
+
+    <article class="edizione-evidenza" data-cerca={cerca(ultima)} aria-labelledby="titolo-ultima">
+      <div class="affiancati affiancati--fondo" style="gap: 16px 56px;">
+        <div class="numerale numerale--grande" aria-hidden="true">{ultima.numero}</div>
+        <div style="flex: 1 1 420px; min-width: 0;">
+          <p class="sommesso" style="font-size: 17px;">Edizione più recente{ultima.data && `, ${ultima.data}`}</p>
+          <h2 id="titolo-ultima" style="margin-top: 6px; font-family: var(--titoli); font-weight: 500; font-size: clamp(36px, 3.8vw, 52px); line-height: 1.08;">Premio Muricello {ultima.anno}</h2>
+          {ultima.tema && <p class="tema" style="margin-top: 10px;">«{ultima.tema}»</p>}
+        </div>
+      </div>
+      {ultima.premi.length > 0 && (
+        <div class="griglia" style="margin-top: 48px; gap: 32px 48px;">
+          {ultima.premi.map((p) => (
+            <div class="filetto" style="padding-top: 18px;">
+              <h3 class="etichetta">{p.sezione}</h3>
+              <p style="margin-top: 8px; font-family: var(--titoli); font-size: 30px; line-height: 1.15; font-weight: 500;">{p.nome}</p>
+              {p.opera && <p style="margin-top: 8px;"><i>{p.opera}</i></p>}
+              {(p.editore || p.ruolo) && <p class="sommesso" style="margin-top: 2px;">{p.editore || p.ruolo}</p>}
+            </div>
+          ))}
+        </div>
+      )}
+      <a class="bottone" href={`/edizioni/${ultima.anno}/`} style="margin-top: 44px;">Vai all'edizione {ultima.anno}</a>
+    </article>
+
+    {compilate.map((e) => (
+      <article class="edizione-voce" data-cerca={cerca(e)}>
+        <div class="edizione-voce__lato">
+          <div class="numerale numerale--medio" aria-hidden="true">{e.numero}</div>
+          <h2>{e.anno}</h2>
+          {e.data && <div class="piccolo sommesso">{e.data}</div>}
+        </div>
+        <div class="edizione-voce__corpo">
+          {e.tema && <p class="tema">«{e.tema}»</p>}
+          <div class="griglia" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 24px 40px;">
+            {(() => {
+              const gruppi: { sezione: string; voci: typeof e.premi }[] = [];
+              for (const p of e.premi) {
+                const g = gruppi.find((x) => x.sezione === p.sezione);
+                if (g) g.voci.push(p); else gruppi.push({ sezione: p.sezione, voci: [p] });
+              }
+              return gruppi.map((g) => (
+                <div>
+                  <h3 class="etichetta etichetta--grigia" style="margin-bottom: 4px;">{g.sezione}</h3>
+                  {g.voci.length === 1 ? (
+                    <>
+                      <p style="font-size: 19px; font-weight: 600; line-height: 1.5;">{g.voci[0].nome}</p>
+                      {g.voci[0].opera && <p><i>{g.voci[0].opera}</i></p>}
+                      {(g.voci[0].editore || g.voci[0].ruolo) && <p class="sommesso" style="font-size: 17px;">{g.voci[0].editore || g.voci[0].ruolo}</p>}
+                    </>
+                  ) : (
+                    <p style="font-size: 19px; font-weight: 600; line-height: 1.5;">{g.voci.map((v) => v.nome).join(', ')}</p>
+                  )}
+                </div>
+              ));
+            })()}
+          </div>
+          {e.finalisti.length > 0 && (
+            <div>
+              <h3 class="etichetta etichetta--grigia" style="margin-bottom: 4px;">Finalisti del Premio letterario</h3>
+              <p style="max-width: 40em;">{e.finalisti.map((f) => f.autore).join(', ')}</p>
+            </div>
+          )}
+          <a class="link" href={`/edizioni/${e.anno}/`} style="align-self: flex-start; padding: 8px 0;">Scheda dell'edizione {e.anno}</a>
+        </div>
+      </article>
+    ))}
+
+    <p id="nessuno" class="in-preparazione" hidden>Nessuna edizione corrisponde alla ricerca. Prova con un cognome, il titolo di un libro o un anno.</p>
+
+    {daCompilare.length > 0 && (
+      <section id="altre" aria-labelledby="titolo-altre" style="padding: 64px 0 clamp(72px, 9vw, 120px); border-top: 1px solid var(--linea);">
+        <div class="capo-sezione capo-sezione--diviso">
+          <h2 id="titolo-altre" class="titolo-sezione" style="font-size: clamp(30px, 3vw, 42px);">Le altre edizioni</h2>
+          <p class="sommesso">Stiamo ricostruendo l'archivio di queste edizioni: premiati, opere e fotografie arriveranno a breve.</p>
+        </div>
+        <ul class="tasselli">
+          {daCompilare.map((e) => (
+            <li data-cerca={cerca(e)}>
+              <a href={`/edizioni/${e.anno}/`}>
+                <span class="numerale" aria-hidden="true">{e.numero}</span>
+                <span class="anno">{e.anno}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </div>
+</Base>
+
+<script>
+  const campo = document.getElementById('cerca') as HTMLInputElement | null;
+  const esito = document.getElementById('esito');
+  const nessuno = document.getElementById('nessuno');
+  const altre = document.getElementById('altre');
+  const voci = Array.from(document.querySelectorAll<HTMLElement>('[data-cerca]'));
+  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+
+  campo?.addEventListener('input', () => {
+    const q = norm(campo.value);
+    let visibili = 0;
+    for (const v of voci) {
+      const ok = !q || (v.dataset.cerca ?? '').includes(q);
+      v.hidden = !ok;
+      if (ok) visibili++;
+    }
+    if (altre) altre.hidden = !!q && !altre.querySelector('li:not([hidden])');
+    if (nessuno) nessuno.hidden = !q || visibili > 0;
+    if (esito) {
+      esito.textContent = !q
+        ? esito.dataset.iniziale ?? ''
+        : visibili === 0
+          ? ''
+          : visibili === 1
+          ? '1 edizione corrisponde alla ricerca.'
+          : `${visibili} edizioni corrispondono alla ricerca.`;
+    }
+  });
+</script>

@@ -1,0 +1,324 @@
+# Configurazione di Pages CMS (https://pagescms.org): un pannello web per
+# modificare i contenuti del sito senza toccare il codice.
+# Ogni salvataggio diventa una modifica nel repository GitHub e
+# Cloudflare ripubblica il sito in automatico.
+
+media:
+  input: public/media
+  output: /media
+  rename: safe
+  categories: [image, document]
+
+content:
+  # ---------------------------------------------------------------- News
+  - name: news
+    label: News (l'ultima notizia)
+    type: file
+    path: src/data/news.json
+    format: json
+    fields:
+      - name: titolo
+        label: Titolo
+        type: string
+        required: true
+      - name: data
+        label: Data
+        type: date
+        required: true
+      - name: sommario
+        label: Sommario (una o due righe; *asterischi* per il corsivo)
+        type: text
+        required: true
+      - name: immagine
+        label: Immagine
+        type: image
+      - name: didascalia
+        label: Didascalia dell'immagine
+        type: string
+      - name: testo
+        label: Testo (paragrafi separati da una riga vuota; una riga che inizia con > diventa una citazione)
+        type: text
+      - name: link
+        label: Link in fondo alla notizia (es. /edizioni/2026/)
+        type: string
+      - name: linkTesto
+        label: Testo del link
+        type: string
+
+  # ------------------------------------------------------------ Edizioni
+  - name: edizioni
+    label: Edizioni del Premio
+    type: collection
+    path: src/content/edizioni
+    format: json
+    filename: "{anno}.json"
+    view:
+      primary: anno
+      fields: [anno, numero, tema]
+      sort: anno
+      order: desc
+    fields:
+      - name: anno
+        label: Anno
+        type: number
+        required: true
+      - name: numero
+        label: Numero romano dell'edizione (es. XIV)
+        type: string
+        required: true
+      - name: ordinale
+        label: Ordinale (es. Quattordicesima)
+        type: string
+        required: true
+      - name: data
+        label: Data (es. 25 luglio 2026)
+        type: string
+      - name: luogo
+        label: Luogo
+        type: string
+      - name: tema
+        label: Frase guida
+        type: string
+      - name: racconto
+        label: Breve racconto dell'edizione
+        type: text
+      - name: copertina
+        label: Foto di apertura
+        type: image
+      - name: premi
+        label: Premiati
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{sezione}: {nome}"
+        fields:
+          - name: sezione
+            label: Sezione (es. Premio letterario, Premio Muricello, sezione impegno civile)
+            type: string
+            required: true
+          - name: nome
+            label: Nome
+            type: string
+            required: true
+          - name: opera
+            label: Titolo dell'opera
+            type: string
+          - name: editore
+            label: Editore
+            type: string
+          - name: ruolo
+            label: Ruolo o attività
+            type: string
+          - name: motivazione
+            label: Motivazione
+            type: text
+          - name: foto
+            label: Foto
+            type: image
+      - name: citazione
+        label: Citazione
+        type: object
+        fields:
+          - name: testo
+            label: Testo (senza virgolette)
+            type: text
+          - name: autore
+            label: Autore
+            type: string
+      - name: finalistiIntro
+        label: Introduzione ai finalisti
+        type: text
+      - name: finalisti
+        label: Opere finaliste
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{autore}"
+        fields:
+          - name: autore
+            label: Autore
+            type: string
+            required: true
+          - name: opera
+            label: Titolo
+            type: string
+            required: true
+          - name: editore
+            label: Editore
+            type: string
+          - name: nota
+            label: Nota
+            type: string
+          - name: copertina
+            label: Copertina del libro
+            type: image
+          - name: vincitore
+            label: Vincitore del Premio letterario
+            type: boolean
+      - name: momentiTitolo
+        label: Titolo della sezione momenti (es. La serata)
+        type: string
+      - name: momentiIntro
+        label: Introduzione ai momenti
+        type: text
+      - name: momenti
+        label: Momenti dell'edizione
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{titolo}"
+        fields:
+          - name: titolo
+            label: Titolo
+            type: string
+            required: true
+          - name: testo
+            label: Testo
+            type: text
+
+  # -------------------------------------------------------------- Eventi
+  - name: eventi
+    label: Eventi e album fotografici
+    type: collection
+    path: src/content/eventi
+    format: json
+    filename: "{data}-{titolo}.json"
+    view:
+      primary: titolo
+      fields: [titolo, data, luogo]
+      sort: data
+      order: desc
+    fields:
+      - name: titolo
+        label: Titolo
+        type: string
+        required: true
+      - name: data
+        label: Data
+        type: date
+        required: true
+      - name: luogo
+        label: Luogo
+        type: string
+      - name: descrizione
+        label: Descrizione
+        type: text
+      - name: locandina
+        label: Locandina
+        type: image
+      - name: foto
+        label: Fotografie dell'evento (formano l'album nella Gallery)
+        type: image
+        list: true
+
+  # ------------------------------------------------------------- Persone
+  - name: persone
+    label: Persone e giurie
+    type: collection
+    path: src/content/persone
+    format: json
+    filename: "{nome}.json"
+    view:
+      primary: nome
+      fields: [nome, ruolo, gruppo]
+      sort: ordine
+    fields:
+      - name: nome
+        label: Nome e cognome
+        type: string
+        required: true
+      - name: ruolo
+        label: Ruolo o professione
+        type: string
+      - name: gruppo
+        label: Gruppo
+        type: select
+        required: true
+        options:
+          values:
+            - name: associazione
+              label: Associazione
+            - name: giuria-letteraria
+              label: Giuria letteraria
+            - name: giuria-poesia
+              label: Giuria di poesia
+      - name: ordine
+        label: Ordine di apparizione (1 = primo)
+        type: number
+      - name: bio
+        label: Biografia (se vuota, la scheda non si apre)
+        type: text
+      - name: foto
+        label: Foto
+        type: image
+
+  # --------------------------------------------------------- Impostazioni
+  - name: sito
+    label: Impostazioni del sito
+    type: file
+    path: src/data/sito.json
+    format: json
+    fields:
+      - name: nome
+        label: Nome dell'associazione
+        type: string
+      - name: descrizione
+        label: Descrizione per Google (circa 150 caratteri)
+        type: text
+      - name: indirizzo
+        label: Indirizzo
+        type: string
+      - name: cap
+        label: CAP
+        type: string
+      - name: comune
+        label: Comune
+        type: string
+      - name: provincia
+        label: Provincia
+        type: string
+      - name: email
+        label: Email
+        type: string
+      - name: facebook
+        label: Pagina Facebook
+        type: string
+      - name: codiceFiscale
+        label: Codice fiscale
+        type: string
+      - name: costituzione
+        label: Data di costituzione
+        type: string
+      - name: premiMuricello
+        label: Numero di Premi Muricello assegnati
+        type: number
+      - name: menzioniSpeciali
+        label: Numero di menzioni speciali
+        type: number
+      - name: partner
+        label: Numero di associazioni e istituzioni partner
+        type: number
+      - name: collaboratori
+        label: Frase sui collaboratori
+        type: text
+      - name: fotoHome
+        label: Foto grande in home
+        type: image
+      - name: didascaliaFotoHome
+        label: Didascalia della foto in home
+        type: string
+      - name: fotoCavallo
+        label: Foto del cavallo alato
+        type: image
+      - name: fotoAssociazione
+        label: Foto di gruppo dell'associazione
+        type: image
+      - name: fotoBiblioteca
+        label: Foto della Biblioteca
+        type: image
+      - name: sitoBiblioteca
+        label: Indirizzo del sito della Biblioteca
+        type: string

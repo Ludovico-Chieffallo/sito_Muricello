@@ -1,0 +1,42 @@
+# Reindirizzamenti permanenti (301) dagli indirizzi del vecchio sito ai nuovi.
+# Servono a non perdere il posizionamento su Google. Letti da Cloudflare Pages.
+
+/home                          /                        301
+
+/chi-siamo                     /associazione/           301
+/premio-muricello              /edizioni/               301
+/blog-detail                   /news/                   301
+/blog-detail/*                 /news/                   301
+/sub-eventi-2023               /eventi/2023/            301
+/sub-eventi-2024               /eventi/2024/            301
+/sub-eventi-2025               /eventi/2025/            301
+
+# Le pagine delle singole edizioni
+/2013                          /edizioni/2013/          301
+/2014                          /edizioni/2014/          301
+/2015                          /edizioni/2015/          301
+/2016                          /edizioni/2016/          301
+/2017                          /edizioni/2017/          301
+/2018                          /edizioni/2018/          301
+/2019                          /edizioni/2019/          301
+/2020                          /edizioni/2020/          301
+/2021                          /edizioni/2021/          301
+/2022                          /edizioni/2022/          301
+/2023                          /edizioni/2023/          301
+/2024                          /edizioni/2024/          301
+/2025                          /edizioni/2025/          301
+/2026                          /edizioni/2026/          301
+
+# Le pagine delle persone ora sono schede nella pagina Associazione
+/antonio-chieffallo            /associazione/           301
+/tiziana-bagnato               /associazione/           301
+/ugo-floro                     /associazione/           301
+/silvia-camerino               /associazione/           301
+/emanuela-stella               /associazione/           301
+/antonio-esposito              /associazione/           301
+/angelica-artemisia-pedatella  /associazione/           301
+/antonio-pagliuso              /associazione/           301
+/letizia-cuzzola               /associazione/           301
+/rosalba-baldino               /associazione/           301
+/martino-ciano                 /associazione/           301
+/ippolita-luzzo                /associazione/           301

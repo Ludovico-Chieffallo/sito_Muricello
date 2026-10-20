@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro';
+import Locandina from '../../components/Locandina.astro';
+import BarraAnni from '../../components/BarraAnni.astro';
+import { edizioni, eventi, type Edizione } from '../../lib/dati';
+import { inline, dataLunga, dataIso } from '../../lib/testo';
+
+export async function getStaticPaths() {
+  const tutte = await edizioni();
+  return tutte.map((e, i) => ({
+    params: { anno: String(e.anno) },
+    props: { e, successiva: tutte[i - 1] ?? null, precedente: tutte[i + 1] ?? null },
+  }));
+}
+
+interface Props { e: Edizione; successiva: Edizione | null; precedente: Edizione | null }
+const { e, successiva, precedente } = Astro.props;
+const tutte = await edizioni();
+const lista = (await eventi()).filter((ev) => ev.anno === e.anno);
+---
+<Base titolo={`Eventi ${e.anno}`} attivo="eventi" descrizione={`Gli eventi della ${e.ordinale.toLowerCase()} edizione del Premio Muricello, ${e.anno}: locandine e descrizioni.`}>
+  <div class="contenitore">
+    <nav class="percorso" aria-label="Percorso">
+      <a href="/eventi/">Eventi</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{e.anno}</span>
+    </nav>
+    <BarraAnni anni={tutte} corrente={e.anno} base="/eventi/" etichetta="Eventi per anno" />
+
+    <section class="testa-edizione" aria-labelledby="titolo-anno">
+      <div class="numerale numerale--grande" aria-hidden="true">{e.numero}</div>
+      <div class="testa-edizione__testo">
+        <h1 id="titolo-anno" style="font-size: clamp(44px, 5.4vw, 76px);">Eventi {e.anno}</h1>
+        <p class="sommesso" style="margin-top: 14px;">Gli appuntamenti della {e.ordinale.toLowerCase()} edizione del Premio Muricello.</p>
+      </div>
+    </section>
+
+    {lista.length === 0 ? (
+      <p class="in-preparazione" style="margin-bottom: var(--spazio-sezione);">Le locandine e le descrizioni degli eventi di quest'anno sono in preparazione.</p>
+    ) : (
+      <ul class="lista-pulita griglia" style="border-top: 1px solid var(--linea); padding: 48px 0 clamp(64px, 8vw, 104px); grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 64px 48px;">
+        {lista.map((ev) => (
+          <li>
+            <article class="evento" id={ev.slug} aria-labelledby={`titolo-${ev.slug}`}>
+              <Locandina src={ev.locandina} titolo={ev.titolo} data={ev.data} luogo={ev.luogo} />
+              <p class="data"><time datetime={dataIso(ev.data)}>{dataLunga(ev.data)}</time></p>
+              <h2 id={`titolo-${ev.slug}`} set:html={inline(ev.titolo)} />
+              {ev.luogo && <p class="piccolo sommesso" style="margin-top: 6px;">{ev.luogo}</p>}
+              {ev.descrizione && <p class="descrizione" set:html={inline(ev.descrizione)} />}
+              <div class="azioni" style="gap: 0 24px; margin-top: 6px;">
+                {ev.locandina && <a class="link" style="font-size: 17px;" href={ev.locandina}>Apri la locandina</a>}
+                {ev.foto.length > 0 && <a class="link" style="font-size: 17px;" href={`/gallery/${e.anno}/${ev.slug}/`}>Guarda le foto</a>}
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+
+  <nav class="vicine" aria-label="Anni vicini">
+    <div class="contenitore vicine__riga">
+      <div>
+        {precedente && (
+          <a href={`/eventi/${precedente.anno}/`}>
+            <span class="vicine__su">Anno precedente</span>
+            <span class="vicine__titolo">Eventi {precedente.anno}</span>
+          </a>
+        )}
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 24px 48px; justify-content: flex-end;">
+        <a class="destra" href={`/edizioni/${e.anno}/`}>
+          <span class="vicine__su">Premiati e finalisti</span>
+          <span class="vicine__titolo">L'edizione {e.anno}</span>
+        </a>
+        {successiva && (
+          <a class="destra" href={`/eventi/${successiva.anno}/`}>
+            <span class="vicine__su">Anno successivo</span>
+            <span class="vicine__titolo">Eventi {successiva.anno}</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </nav>
+</Base>

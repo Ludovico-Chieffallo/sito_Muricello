@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import { edizioni, eventi } from '../../lib/dati';
+
+const anni = await edizioni();
+const tutti = await eventi();
+const conteggio = (anno: number) => tutti.filter((e) => e.anno === anno).length;
+---
+<Base titolo="Eventi" attivo="eventi" descrizione="Le iniziative dell'associazione Muricello e le serate del Premio, anno per anno, con locandine e descrizioni.">
+  <div class="contenitore" style="padding-bottom: var(--spazio-sezione);">
+    <section style="padding-block: clamp(56px, 8vw, 104px) clamp(40px, 5vw, 64px);" aria-labelledby="titolo-eventi">
+      <h1 id="titolo-eventi" class="titolo-pagina">Eventi</h1>
+      <p class="introduzione" style="margin-top: 24px;">Le iniziative dell'associazione e del Premio, anno per anno: per ogni evento la locandina, una descrizione e le fotografie.</p>
+    </section>
+    <ul class="tasselli" style="margin-top: 0; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));">
+      {anni.map((a) => {
+        const n = conteggio(a.anno);
+        return (
+          <li>
+            <a href={`/eventi/${a.anno}/`} style="padding: 28px 24px 26px;">
+              <span class="numerale" aria-hidden="true" style="font-size: 52px;">{a.numero}</span>
+              <span class="anno" style="margin-top: 14px; font-size: 22px; font-weight: 600;">{a.anno}</span>
+              <span class="stato">{n === 0 ? 'In preparazione' : n === 1 ? '1 evento' : `${n} eventi`}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</Base>

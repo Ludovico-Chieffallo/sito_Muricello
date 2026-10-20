@@ -1,0 +1,32 @@
+---
+// La fila delle edizioni (XIV 2026 … I 2013), con l'anno corrente evidenziato.
+interface Props {
+  anni: { anno: number; numero: string }[];
+  corrente: number;
+  base: string; // es. "/edizioni/"
+  etichetta: string;
+}
+const { anni, corrente, base, etichetta } = Astro.props;
+---
+<nav class="barra-anni" aria-label={etichetta}>
+  <ul>
+    {anni.map((a) => (
+      <li>
+        <a href={`${base}${a.anno}/`} aria-current={a.anno === corrente ? 'page' : undefined} aria-label={`${a.anno}`}>
+          <span class="barra-anni__n" aria-hidden="true">{a.numero}</span>
+          <span class="barra-anni__a" aria-hidden="true">{a.anno}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  // Sul telefono la fila scorre: porta in vista l'anno della pagina.
+  document.querySelectorAll<HTMLElement>('.barra-anni').forEach((barra) => {
+    const attivo = barra.querySelector<HTMLElement>('[aria-current]');
+    if (attivo && barra.scrollWidth > barra.clientWidth) {
+      barra.scrollLeft = attivo.offsetLeft - barra.clientWidth / 2 + attivo.offsetWidth / 2;
+    }
+  });
+</script>

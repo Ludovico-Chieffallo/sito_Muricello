@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import sito from '../data/sito.json';
+---
+<Base titolo="Contatti" attivo="contatti" descrizione="Contatti dell'associazione culturale Muricello: sede a San Mango d'Aquino, email e pagina Facebook del Premio.">
+  <section class="contenitore" style="padding-block: clamp(56px, 8vw, 104px) var(--spazio-sezione);" aria-labelledby="titolo-contatti">
+    <h1 id="titolo-contatti" class="titolo-pagina">Contatti</h1>
+    <p class="introduzione" style="margin-top: 24px;">Per informazioni sul Premio, sulle candidature delle opere e sulle iniziative dell'associazione, scrivici.</p>
+    <div class="griglia" style="margin-top: 64px;">
+      <div class="filetto--forte">
+        <h2 class="titolo-medio">Email</h2>
+        <p style="margin-top: 12px;"><a href={`mailto:${sito.email}`} style="font-size: 20px;">{sito.email}</a></p>
+      </div>
+      <div class="filetto--forte">
+        <h2 class="titolo-medio">Sede</h2>
+        <address style="margin-top: 12px; font-style: normal;">{sito.nome}<br />{sito.indirizzo}<br />{sito.cap} {sito.comune} ({sito.provincia})</address>
+      </div>
+      <div class="filetto--forte">
+        <h2 class="titolo-medio">Facebook</h2>
+        <p style="margin-top: 12px;"><a href={sito.facebook} rel="noopener">La pagina del Premio Muricello</a></p>
+      </div>
+    </div>
+  </section>
+</Base>

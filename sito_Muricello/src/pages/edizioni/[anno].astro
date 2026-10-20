@@ -1,0 +1,182 @@
+---
+import Base from '../../layouts/Base.astro';
+import Foto from '../../components/Foto.astro';
+import BarraAnni from '../../components/BarraAnni.astro';
+import { edizioni, eventi, type Edizione } from '../../lib/dati';
+import { inline, semplice } from '../../lib/testo';
+
+export async function getStaticPaths() {
+  const tutte = await edizioni();
+  return tutte.map((e, i) => ({
+    params: { anno: String(e.anno) },
+    props: { e, successiva: tutte[i - 1] ?? null, precedente: tutte[i + 1] ?? null },
+  }));
+}
+
+interface Props { e: Edizione; successiva: Edizione | null; precedente: Edizione | null }
+const { e, successiva, precedente } = Astro.props;
+
+const tutte = await edizioni();
+const eventiAnno = (await eventi()).filter((ev) => ev.anno === e.anno);
+const fotoAnno = eventiAnno.flatMap((ev) => ev.foto).slice(0, 3);
+const compilata = e.premi.length > 0 || !!e.racconto;
+
+const descrizione = e.racconto
+  ? semplice(e.racconto).slice(0, 155)
+  : `${e.ordinale} edizione del Premio Muricello, ${e.anno}: premiati, opere e fotografie.`;
+---
+<Base titolo={`Premio Muricello ${e.anno}`} attivo="edizioni" descrizione={descrizione} immagine={e.copertina}>
+  <div class="contenitore">
+    <nav class="percorso" aria-label="Percorso">
+      <a href="/edizioni/">Edizioni</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{e.anno}</span>
+    </nav>
+    <BarraAnni anni={tutte} corrente={e.anno} base="/edizioni/" etichetta="Tutte le edizioni" />
+
+    <section class="testa-edizione" aria-labelledby="titolo-edizione">
+      <div class="numerale numerale--enorme" aria-hidden="true">{e.numero}</div>
+      <div class="testa-edizione__testo">
+        <p class="occhiello" style="margin-bottom: 14px;">{e.ordinale} edizione</p>
+        <h1 id="titolo-edizione">Premio Muricello {e.anno}</h1>
+        {e.tema && <p class="tema">{e.tema}</p>}
+        {(e.luogo || e.data) && <p class="sommesso" style="margin-top: 14px;">{[e.luogo, e.data].filter(Boolean).join(', ')}</p>}
+      </div>
+    </section>
+
+    {e.racconto && <p class="racconto" set:html={inline(e.racconto)} />}
+
+    {!compilata && (
+      <p class="in-preparazione">Stiamo ricostruendo l'archivio di questa edizione: premiati, opere e fotografie saranno pubblicati a breve.</p>
+    )}
+  </div>
+
+  {e.copertina && (
+    <figure class="contenitore contenitore--largo" style="margin-top: clamp(48px, 6vw, 80px);">
+      <img class="foto" src={e.copertina} alt={`Premio Muricello ${e.anno}`} style="aspect-ratio: 21 / 9;" />
+    </figure>
+  )}
+
+  {e.premi.length > 0 && (
+    <section class="contenitore sezione" aria-labelledby="titolo-premiati">
+      <h2 id="titolo-premiati" class="titolo-sezione" style="margin-bottom: 44px;">I premiati</h2>
+      <div class="griglia" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 56px 48px;">
+        {e.premi.map((p) => (
+          <article class="premiato">
+            <Foto src={p.foto} alt={p.nome} nome={p.nome} />
+            <h3>{p.sezione}</h3>
+            <p class="nome">{p.nome}</p>
+            {(p.opera || p.editore || p.ruolo) && (
+              <p class="opera">
+                {p.opera && <i>{p.opera}</i>}
+                {p.opera && (p.editore || p.ruolo) && <br />}
+                {(p.editore || p.ruolo) && <span class="sommesso">{p.editore || p.ruolo}</span>}
+              </p>
+            )}
+            {p.motivazione && <p class="motivazione" set:html={inline(p.motivazione)} />}
+          </article>
+        ))}
+      </div>
+      {e.citazione && (
+        <blockquote class="citazione">
+          <p>«{e.citazione.testo}»</p>
+          {e.citazione.autore && <footer>{e.citazione.autore}</footer>}
+        </blockquote>
+      )}
+    </section>
+  )}
+
+  {e.finalisti.length > 0 && (
+    <section class="sezione sezione--chiara" aria-labelledby="titolo-finalisti">
+      <div class="contenitore">
+        <div class="capo-sezione capo-sezione--diviso">
+          <h2 id="titolo-finalisti" class="titolo-sezione">Le opere finaliste</h2>
+          {e.finalistiIntro && <p>{e.finalistiIntro}</p>}
+        </div>
+        <ul class="lista-pulita griglia griglia--ampia" style="margin-top: 56px; gap: 40px 56px;">
+          {e.finalisti.map((f) => (
+            <li class="libro filetto">
+              {f.copertina
+                ? <img class="libro__copertina" src={f.copertina} alt={`Copertina di ${f.opera}`} loading="lazy" />
+                : <div class="libro__copertina" aria-hidden="true"></div>}
+              <div class="libro__testo">
+                <div class="autore">{f.autore}{f.vincitore && <span class="marchio-vincitore">Vincitore</span>}</div>
+                <div><i>{f.opera}</i></div>
+                {f.editore && <div class="piccolo sommesso">{f.editore}</div>}
+                {f.nota && <div class="piccolo sommesso" style="margin-top: 8px;">{f.nota}</div>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {e.momenti.length > 0 && (
+    <section class="contenitore sezione" aria-labelledby="titolo-momenti">
+      <div class="capo-sezione capo-sezione--diviso">
+        <h2 id="titolo-momenti" class="titolo-sezione">{e.momentiTitolo || 'La serata'}</h2>
+        {e.momentiIntro && <p>{e.momentiIntro}</p>}
+      </div>
+      <ul class="lista-pulita griglia griglia--ampia" style="margin-top: 56px;">
+        {e.momenti.map((m) => (
+          <li class="filetto">
+            <h3 class="titolo-medio">{m.titolo}</h3>
+            {m.testo && <p style="margin-top: 12px; font-size: 17px;" set:html={inline(m.testo)} />}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {eventiAnno.length > 0 && fotoAnno.length === 0 && (
+    <div class="sezione--bordo">
+      <p class="contenitore" style="padding-block: 40px;">
+        <a class="link" href={`/eventi/${e.anno}/`}>Le locandine e gli eventi del {e.anno}</a>
+      </p>
+    </div>
+  )}
+
+  {fotoAnno.length > 0 && (
+    <section class="sezione sezione--bordo" aria-labelledby="titolo-foto">
+      <div class="contenitore">
+        <div class="capo-sezione" style="margin-bottom: 32px;">
+          <h2 id="titolo-foto" class="titolo-sezione">Fotografie e locandine</h2>
+          <div class="azioni" style="gap: 4px 32px;">
+            <a class="link" href={`/gallery/${e.anno}/`}>Gli album del {e.anno}</a>
+            <a class="link" href={`/eventi/${e.anno}/`}>Gli eventi del {e.anno}</a>
+          </div>
+        </div>
+        <div class="griglia" style="gap: 16px;">
+          {fotoAnno.map((f) => <img class="foto" src={f} alt="" loading="lazy" style="aspect-ratio: 4 / 3;" />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <nav class="vicine" aria-label="Edizioni vicine">
+    <div class="contenitore vicine__riga">
+      <div>
+        {precedente && (
+          <a href={`/edizioni/${precedente.anno}/`}>
+            <span class="vicine__su">Edizione precedente</span>
+            <span class="vicine__titolo">{precedente.numero}, {precedente.anno}</span>
+          </a>
+        )}
+      </div>
+      <div>
+        {successiva ? (
+          <a class="destra" href={`/edizioni/${successiva.anno}/`}>
+            <span class="vicine__su">Edizione successiva</span>
+            <span class="vicine__titolo">{successiva.numero}, {successiva.anno}</span>
+          </a>
+        ) : (
+          <a class="destra" href="/edizioni/">
+            <span class="vicine__su">Dal {tutte[tutte.length - 1].anno} a oggi</span>
+            <span class="vicine__titolo">Tutte le edizioni</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </nav>
+</Base>

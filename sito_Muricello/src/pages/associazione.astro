@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import GrigliaPersone from '../components/GrigliaPersone.astro';
+import sito from '../data/sito.json';
+import { persone } from '../lib/dati';
+
+const associazione = await persone('associazione');
+const giuria = await persone('giuria-letteraria');
+const giuriaPoesia = await persone('giuria-poesia');
+---
+<Base titolo="L'associazione" attivo="associazione" descrizione="L'associazione culturale Muricello di San Mango d'Aquino: i quattro pilastri, le persone, la giuria letteraria e la giuria di poesia.">
+  <section class="contenitore affiancati affiancati--fondo" style="padding-block: clamp(56px, 8vw, 104px) clamp(40px, 5vw, 64px); gap: 32px 88px;" aria-labelledby="titolo-associazione">
+    <div class="colonna-ampia" style="flex-basis: 560px;">
+      <h1 id="titolo-associazione" class="titolo-pagina">L'associazione</h1>
+      <p class="introduzione" style="margin-top: 28px; max-width: 33em;">L'associazione culturale Muricello dà una struttura stabile alle iniziative culturali, sportive e di impegno sociale nate negli ultimi quindici anni a San Mango d'Aquino e in Calabria, e promuove le eccellenze della regione come occasione di sviluppo culturale ed economico.</p>
+    </div>
+    <dl class="dati" style="flex: 0 1 320px;">
+      <dt>Costituita</dt><dd>{sito.costituzione}</dd>
+      <dt>Sede</dt><dd>{sito.indirizzo}, {sito.comune} ({sito.provincia})</dd>
+      <dt>Codice fiscale</dt><dd>{sito.codiceFiscale}</dd>
+    </dl>
+  </section>
+
+  {sito.fotoAssociazione && (
+    <figure class="contenitore contenitore--largo">
+      <img class="foto" src={sito.fotoAssociazione} alt="L'associazione culturale Muricello" style="aspect-ratio: 21 / 8;" />
+    </figure>
+  )}
+
+  <section class="contenitore" style="padding-top: var(--spazio-sezione);" aria-labelledby="titolo-pilastri">
+    <h2 id="titolo-pilastri" class="titolo-sezione">I quattro pilastri</h2>
+    <ul class="lista-pulita griglia griglia--quattro" style="margin-top: 44px;">
+      <li class="filetto--forte">
+        <h3 class="titolo-medio">Il Premio Muricello</h3>
+        <p style="margin-top: 12px; font-size: 17px;">Dal 2013 riconosce chi si impegna in battaglie civili, sociali e culturali, accanto a un premio letterario e, dal 2026, a un premio di poesia.</p>
+      </li>
+      <li class="filetto--forte">
+        <h3 class="titolo-medio">Eventi sul territorio</h3>
+        <p style="margin-top: 12px; font-size: 17px;">Incontri, presentazioni e iniziative culturali organizzati in tutta la regione.</p>
+      </li>
+      <li class="filetto--forte">
+        <h3 class="titolo-medio">Centro di documentazione storica</h3>
+        <p style="margin-top: 12px; font-size: 17px;">Un archivio che nasce dai 23.000 quotidiani e riviste calabresi conservati dall'associazione.</p>
+      </li>
+      <li class="filetto--forte">
+        <h3 class="titolo-medio">Biblioteca Nuccio Ordine</h3>
+        <p style="margin-top: 12px; font-size: 17px;">Il legame con la Biblioteca comunale di San Mango d'Aquino, raccontato più sotto in questa pagina.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="contenitore" style="padding-top: var(--spazio-sezione);" aria-labelledby="titolo-persone">
+    <div class="capo-sezione capo-sezione--diviso">
+      <h2 id="titolo-persone" class="titolo-sezione">Le persone</h2>
+      <p class="sommesso">Seleziona una persona per leggere la sua scheda.</p>
+    </div>
+    <GrigliaPersone persone={associazione} />
+    {sito.collaboratori && <p class="sommesso" style="margin-top: 48px; max-width: 40em; font-size: 17px;">{sito.collaboratori}</p>}
+  </section>
+
+  <section class="contenitore" style="padding-top: var(--spazio-sezione);" aria-labelledby="titolo-giuria">
+    <div class="capo-sezione capo-sezione--diviso">
+      <h2 id="titolo-giuria" class="titolo-sezione">Giuria letteraria</h2>
+      <p>Sceglie ogni anno le opere finaliste e il vincitore del Premio letterario.</p>
+    </div>
+    <GrigliaPersone persone={giuria} />
+  </section>
+
+  <section class="contenitore sezione" aria-labelledby="titolo-giuria-poesia">
+    <div class="capo-sezione capo-sezione--diviso">
+      <h2 id="titolo-giuria-poesia" class="titolo-sezione">Giuria di poesia</h2>
+      <p>Assegna il Premio Muricello Poesia, istituito nel 2026.</p>
+    </div>
+    <GrigliaPersone persone={giuriaPoesia} />
+  </section>
+
+  <section class="sezione sezione--chiara" id="biblioteca" aria-labelledby="titolo-biblioteca">
+    <div class="contenitore affiancati affiancati--centro">
+      <div class="colonna-ampia" style="flex-basis: 520px;">
+        <h2 id="titolo-biblioteca" class="titolo-sezione">La Biblioteca Nuccio Ordine</h2>
+        <p class="misura" style="margin-top: 24px; max-width: 33em;">Il Premio Muricello è legato alla Biblioteca comunale Nuccio Ordine di San Mango d'Aquino, intitolata allo studioso calabrese e oggi centro studi dedicato alla letteratura della regione. In biblioteca è custodito <i>Il manoscritto dei poeti</i>, il volume in copia unica di poesie autografe dei poeti calabresi contemporanei, presentato durante l'edizione 2026 del Premio.</p>
+        {sito.sitoBiblioteca && <a class="link" href={sito.sitoBiblioteca} style="margin-top: 24px;">Il sito della Biblioteca</a>}
+      </div>
+      {sito.fotoBiblioteca && (
+        <div class="colonna-stretta" style="flex-basis: 400px;">
+          <img class="foto" src={sito.fotoBiblioteca} alt="La Biblioteca Nuccio Ordine di San Mango d'Aquino" style="aspect-ratio: 4 / 3;" loading="lazy" />
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-apri]').forEach((b) => {
+    const d = document.getElementById(b.dataset.apri ?? '') as HTMLDialogElement | null;
+    if (!d) return;
+    b.addEventListener('click', () => d.showModal());
+    d.querySelector('[data-chiudi]')?.addEventListener('click', () => d.close());
+    d.addEventListener('click', (ev) => { if (ev.target === d) d.close(); });
+  });
+</script>

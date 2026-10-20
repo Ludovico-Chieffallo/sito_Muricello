@@ -1,0 +1,23 @@
+---
+// Mostra una foto se c'è; altrimenti un riquadro color pietra con le iniziali.
+import { iniziali } from '../lib/testo';
+
+interface Props {
+  src?: string;
+  alt?: string;
+  nome?: string;
+  classe?: string;
+  rapporto?: string;
+  caricamento?: 'lazy' | 'eager';
+}
+
+const { src = '', alt = '', nome = '', classe = '', rapporto = '4 / 5', caricamento = 'lazy' } = Astro.props;
+const sigla = iniziali(nome);
+---
+{src ? (
+  <img class:list={['foto', classe]} src={src} alt={alt} loading={caricamento} decoding="async" style={`aspect-ratio: ${rapporto}`} />
+) : (
+  <div class:list={['foto', 'foto--vuota', classe]} style={`aspect-ratio: ${rapporto}`} aria-hidden="true">
+    {sigla && <span class="foto__iniziali">{sigla}</span>}
+  </div>
+)}

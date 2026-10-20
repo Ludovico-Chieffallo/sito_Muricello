@@ -1,0 +1,44 @@
+---
+// Schede delle persone: foto, nome e ruolo. Se c'è una biografia,
+// la scheda si apre in una finestra con il testo completo.
+import Foto from './Foto.astro';
+import { inline } from '../lib/testo';
+import type { Persona } from '../lib/dati';
+
+interface Props { persone: Persona[] }
+const { persone } = Astro.props;
+---
+<ul class="lista-pulita griglia griglia--schede" style="margin-top: 44px;">
+  {persone.map((p) => (
+    <li>
+      {p.bio ? (
+        <button type="button" class="scheda" data-apri={`bio-${p.id}`} aria-haspopup="dialog">
+          <Foto src={p.foto} alt={p.nome} nome={p.nome} />
+          <span class="scheda__nome">{p.nome}</span>
+          {p.ruolo && <span class="scheda__ruolo">{p.ruolo}</span>}
+          <span class="scheda__invito">Leggi la scheda</span>
+        </button>
+      ) : (
+        <div class="scheda">
+          <Foto src={p.foto} alt={p.nome} nome={p.nome} />
+          <span class="scheda__nome">{p.nome}</span>
+          {p.ruolo && <span class="scheda__ruolo">{p.ruolo}</span>}
+        </div>
+      )}
+    </li>
+  ))}
+</ul>
+
+{persone.filter((p) => p.bio).map((p) => (
+  <dialog class="bio" id={`bio-${p.id}`} aria-labelledby={`bio-${p.id}-nome`}>
+    <div class="bio__dentro">
+      <div class="bio__foto"><Foto src={p.foto} alt={p.nome} nome={p.nome} /></div>
+      <div class="bio__testo">
+        <h3 id={`bio-${p.id}-nome`}>{p.nome}</h3>
+        {p.ruolo && <p class="ruolo">{p.ruolo}</p>}
+        <p class="testo" set:html={inline(p.bio)} />
+        <button type="button" class="bottone bottone--bordo" data-chiudi>Chiudi la scheda</button>
+      </div>
+    </div>
+  </dialog>
+))}

@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base titolo="Pagina non trovata" descrizione="La pagina cercata non esiste o è stata spostata.">
+  <section class="contenitore" style="padding-block: clamp(72px, 10vw, 140px);" aria-labelledby="titolo-404">
+    <p class="numerale numerale--grande" aria-hidden="true">404</p>
+    <h1 id="titolo-404" class="titolo-sezione" style="margin-top: 32px;">Questa pagina non c'è</h1>
+    <p class="introduzione" style="margin-top: 20px;">Forse è stata spostata con il nuovo sito. Puoi ripartire dalle edizioni del Premio o dalla home.</p>
+    <div class="azioni" style="margin-top: 32px;">
+      <a class="bottone" href="/edizioni/">Le edizioni</a>
+      <a class="link link--scuro" href="/">Torna alla home</a>
+    </div>
+  </section>
+</Base>

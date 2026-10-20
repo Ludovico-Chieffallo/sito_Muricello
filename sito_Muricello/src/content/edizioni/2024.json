@@ -1,0 +1,36 @@
+{
+  "anno": 2024,
+  "numero": "XII",
+  "ordinale": "Dodicesima",
+  "data": "12 e 13 luglio 2024",
+  "luogo": "San Mango d'Aquino",
+  "tema": "Il diritto alla salute",
+  "racconto": "La dodicesima edizione ha scelto come frase guida il diritto alla salute e ha portato sul palco medici, scrittori, giornalisti e testimoni dell'antimafia. Con questa edizione nasce il Muricello Off, dedicato agli studenti delle scuole superiori.",
+  "copertina": "",
+  "premi": [
+    { "sezione": "Premio letterario", "nome": "[Vincitore da inserire]", "opera": "[Titolo dell'opera]", "editore": "[Editore]", "ruolo": "", "motivazione": "", "foto": "" },
+    { "sezione": "Pegaso d'Argento", "nome": "Attilio Sabato", "opera": "", "editore": "", "ruolo": "Direttore di Ten e scrittore", "motivazione": "", "foto": "" },
+    { "sezione": "Pegaso d'Argento", "nome": "Vincenzo Carrozza", "opera": "", "editore": "", "ruolo": "Scrittore e chirurgo per la NATO", "motivazione": "", "foto": "" },
+    { "sezione": "Pegaso d'Argento", "nome": "Santo Gioffrè", "opera": "", "editore": "", "ruolo": "Scrittore, già commissario dell'Asp di Reggio Calabria", "motivazione": "", "foto": "" },
+    { "sezione": "Pegaso d'Argento", "nome": "Maria Garofalo", "opera": "", "editore": "", "ruolo": "Attivista antimafia, sorella di Lea Garofalo", "motivazione": "", "foto": "" },
+    { "sezione": "Pegaso d'Argento", "nome": "Guglielmo Mastroianni", "opera": "", "editore": "", "ruolo": "Giornalista e autore televisivo Mediaset", "motivazione": "", "foto": "" },
+    { "sezione": "Pegaso d'Argento", "nome": "Thomas Ciampa", "opera": "", "editore": "", "ruolo": "Chief Operating Officer del Gruppo Rainbow", "motivazione": "", "foto": "" },
+    { "sezione": "Pegaso d'Argento", "nome": "Emilio Leo", "opera": "", "editore": "", "ruolo": "Titolare dello storico Lanificio Leo", "motivazione": "", "foto": "" },
+    { "sezione": "Pegaso d'Argento", "nome": "Antonio Ditto", "opera": "", "editore": "", "ruolo": "Direttore della Ginecologia oncologica dell'Istituto Tumori di Aviano", "motivazione": "", "foto": "" }
+  ],
+  "citazione": null,
+  "finalistiIntro": "Le opere scelte dalla giuria letteraria per la serata finale.",
+  "finalisti": [
+    { "autore": "Vins Gallico", "opera": "Il dio dello Stretto", "editore": "", "nota": "", "copertina": "", "vincitore": false },
+    { "autore": "Stefano Amato", "opera": "L'ultima candela di Kruje", "editore": "", "nota": "", "copertina": "", "vincitore": false },
+    { "autore": "Claudio Dionesalvi", "opera": "Lettere minuscole", "editore": "", "nota": "", "copertina": "", "vincitore": false },
+    { "autore": "Marcostefano Gallo", "opera": "Scacciasogni", "editore": "", "nota": "", "copertina": "", "vincitore": false },
+    { "autore": "Giuseppe Aloe", "opera": "Le cose di prima", "editore": "", "nota": "", "copertina": "", "vincitore": false },
+    { "autore": "Laura Montuoro", "opera": "Dove finisce il mare", "editore": "", "nota": "", "copertina": "", "vincitore": false }
+  ],
+  "momentiTitolo": "Le serate",
+  "momentiIntro": "",
+  "momenti": [
+    { "titolo": "Muricello Off", "testo": "La nuova sezione che coinvolge gli studenti degli istituti superiori per avvicinarli alla lettura." }
+  ]
+}

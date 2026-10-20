@@ -1,0 +1,167 @@
+---
+import Base from '../layouts/Base.astro';
+import sito from '../data/sito.json';
+import news from '../data/news.json';
+import { edizioni, compilata, premiPerSezione, elencoNomi } from '../lib/dati';
+import { inline, dataLunga, inLettere } from '../lib/testo';
+
+const tutte = await edizioni();
+const ultima = tutte[0];
+const recenti = tutte.filter(compilata).slice(0, 3);
+const dataNews = new Date(news.data);
+
+const datiStrutturati = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: sito.nome,
+  url: 'https://muricello.it/',
+  email: sito.email,
+  taxID: sito.codiceFiscale,
+  foundingDate: '2020-12-10',
+  sameAs: [sito.facebook],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: sito.indirizzo,
+    postalCode: sito.cap,
+    addressLocality: sito.comune,
+    addressRegion: sito.provincia,
+    addressCountry: 'IT',
+  },
+};
+---
+<Base datiStrutturati={datiStrutturati}>
+  <section class="contenitore apertura affiancati affiancati--fondo" aria-labelledby="titolo-home" style="gap: 56px 72px;">
+    <div class="colonna-ampia">
+      <p class="occhiello" style="margin-bottom: 22px;">San Mango d'Aquino, dal 2013</p>
+      <h1 id="titolo-home">Il valore della testimonianza</h1>
+      <p class="introduzione">Il Premio Muricello riconosce chi mette in gioco la propria esistenza per battaglie civili, sociali e culturali, e porta in un borgo della valle del Savuto i libri che raccontano la Calabria di oggi.</p>
+      <div class="azioni">
+        <a class="bottone" href={`/edizioni/${ultima.anno}/`}>Scopri l'edizione {ultima.anno}</a>
+        <a class="link link--scuro" href="/edizioni/">Tutte le edizioni</a>
+      </div>
+    </div>
+    <a class="edizione-corrente" href={`/edizioni/${ultima.anno}/`}>
+      <span class="piccolo sommesso">{ultima.ordinale} edizione{ultima.data && `, ${ultima.data}`}</span>
+      <span class="numerale" aria-hidden="true">{ultima.numero}</span>
+      <span class="edizione-corrente__testo">I premiati e i finalisti del {ultima.anno}</span>
+    </a>
+  </section>
+
+  {sito.fotoHome && (
+    <figure class="contenitore contenitore--largo">
+      <img class="foto" src={sito.fotoHome} alt={sito.didascaliaFotoHome} style="aspect-ratio: 21 / 9;" />
+      {sito.didascaliaFotoHome && <figcaption>{sito.didascaliaFotoHome}</figcaption>}
+    </figure>
+  )}
+
+  {ultima.premi.length > 0 && (
+    <section class="contenitore sezione" aria-labelledby="titolo-premiati">
+      <div class="capo-sezione">
+        <h2 id="titolo-premiati" class="titolo-sezione">I premiati del {ultima.anno}</h2>
+        <a class="link" href={`/edizioni/${ultima.anno}/`}>L'edizione completa</a>
+      </div>
+      <div class="griglia">
+        {ultima.premi.map((p) => (
+          <article class="filetto--forte">
+            <h3 class="etichetta">{p.sezione}</h3>
+            <p class="nome" style="margin-top: 10px;">{p.nome}</p>
+            {(p.opera || p.editore || p.ruolo) && (
+              <p style="margin-top: 10px;">
+                {p.opera && <i>{p.opera}</i>}
+                {p.opera && (p.editore || p.ruolo) && <br />}
+                {(p.editore || p.ruolo) && <span class="sommesso">{p.editore || p.ruolo}</span>}
+              </p>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="sezione sezione--scura notizia-banda" aria-labelledby="titolo-notizia">
+    <div class="contenitore affiancati affiancati--centro" style="gap: 40px 72px;">
+      <div class="colonna-ampia">
+        <h2 id="titolo-notizia" class="piccolo" style="font-weight: 600; font-size: 17px; color: var(--patina-chiara);">Ultima notizia</h2>
+        <p class="data" style="margin-top: 6px;"><time datetime={news.data}>{dataLunga(dataNews)}</time></p>
+        <h3>{news.titolo}</h3>
+        <p class="sommario" set:html={inline(news.sommario)} />
+        <a class="bottone bottone--chiaro" href="/news/">Leggi la notizia</a>
+      </div>
+      {news.immagine && (
+        <div class="colonna-stretta" style="flex-basis: 420px;">
+          <img src={news.immagine} alt={news.didascalia} loading="lazy" />
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="sezione sezione--chiara" aria-labelledby="titolo-premio">
+    <div class="contenitore affiancati">
+      <div class="colonna-ampia">
+        <h2 id="titolo-premio" class="titolo-sezione">Il Premio</h2>
+        <p class="misura" style="margin-top: 26px;">Il Premio Muricello nasce nel 2013 per sostenere chi mette in gioco la propria esistenza a favore di battaglie civili, sociali e culturali. Il suo tratto distintivo è il valore della testimonianza: ogni edizione si lega all'attualità della regione e affronta un tema della vita politica, sociale e culturale calabrese.</p>
+        <p class="misura" style="margin-top: 16px;">Negli anni il riconoscimento è andato a scrittori, magistrati, testimoni di giustizia, vittime di mafia, giornalisti, imprenditori, promotori culturali, autori teatrali, politici, rappresentanti delle forze dell'ordine e professionisti. Accanto a loro, un premio letterario e, dal 2026, un premio dedicato alla poesia.</p>
+        <p class="cifre">In {inLettere(tutte.length)} edizioni, {sito.premiMuricello} Premi Muricello, {sito.menzioniSpeciali} menzioni speciali e {sito.partner} tra associazioni e istituzioni partner.</p>
+      </div>
+      {sito.fotoCavallo && (
+        <figure class="colonna-stretta">
+          <img class="foto" src={sito.fotoCavallo} alt="Il cavallo alato, simbolo del Premio Muricello" style="aspect-ratio: 4 / 5;" loading="lazy" />
+          <figcaption>Il cavallo alato, simbolo del Premio, è opera del Maestro Maurizio Carnevali.</figcaption>
+        </figure>
+      )}
+    </div>
+  </section>
+
+  <section class="contenitore sezione" aria-labelledby="titolo-edizioni">
+    <div class="capo-sezione" style="margin-bottom: 28px;">
+      <h2 id="titolo-edizioni" class="titolo-sezione">Le edizioni</h2>
+      <a class="link" href="/edizioni/">Tutte le edizioni dal 2013</a>
+    </div>
+    <div>
+      {recenti.map((e) => {
+        const gruppi = premiPerSezione(e).slice(0, 2);
+        return (
+          <a class="riga-edizione" href={`/edizioni/${e.anno}/`}>
+            <span class="riga-edizione__numero" aria-hidden="true">{e.numero}</span>
+            <span class="riga-edizione__anno">{e.anno}</span>
+            {gruppi.map((g) => (
+              <span class="riga-edizione__premio">
+                <span>{g.sezione}</span>
+                <strong style="font-weight: 600;">{elencoNomi(g.nomi)}</strong>
+                {g.nomi.length === 1 && g.opera && <>, <i>{g.opera}</i></>}
+              </span>
+            ))}
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="sezione sezione--bordo" aria-labelledby="titolo-associazione">
+    <div class="contenitore">
+      <div class="capo-sezione capo-sezione--diviso">
+        <h2 id="titolo-associazione" class="titolo-sezione">L'associazione</h2>
+        <p>L'associazione culturale Muricello dà una struttura stabile alle iniziative culturali, sportive e di impegno sociale nate negli ultimi quindici anni a San Mango d'Aquino e in Calabria. Il suo lavoro poggia su quattro pilastri.</p>
+      </div>
+      <ul class="lista-pulita griglia griglia--quattro" style="margin-top: 56px;">
+        <li class="filetto--forte">
+          <h3 class="titolo-medio">Il Premio Muricello</h3>
+          <p class="piccolo" style="margin-top: 12px; font-size: 17px;">Riconoscimenti all'impegno civile, un premio letterario e un premio di poesia, assegnati ogni anno a San Mango d'Aquino.</p>
+        </li>
+        <li class="filetto--forte">
+          <h3 class="titolo-medio">Eventi sul territorio</h3>
+          <p style="margin-top: 12px; font-size: 17px;">Incontri, presentazioni e iniziative culturali organizzati in tutta la regione.</p>
+        </li>
+        <li class="filetto--forte">
+          <h3 class="titolo-medio">Centro di documentazione storica</h3>
+          <p style="margin-top: 12px; font-size: 17px;">Un archivio che nasce dai 23.000 quotidiani e riviste calabresi conservati dall'associazione.</p>
+        </li>
+        <li class="filetto--forte">
+          <h3 class="titolo-medio">Biblioteca Nuccio Ordine</h3>
+          <p style="margin-top: 12px; font-size: 17px;">Il Premio è legato alla Biblioteca comunale Nuccio Ordine di San Mango d'Aquino, dove è custodito <i>Il manoscritto dei poeti</i>.</p>
+        </li>
+      </ul>
+      <a class="bottone bottone--bordo" href="/associazione/" style="margin-top: 56px;">Le persone e le giurie</a>
+    </div>
+  </section>
+</Base>

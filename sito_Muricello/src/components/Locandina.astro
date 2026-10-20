@@ -1,0 +1,16 @@
+---
+// La locandina dell'evento; se manca, una locandina tipografica con titolo e data.
+import { dataLunga, semplice } from '../lib/testo';
+
+interface Props { src?: string; titolo: string; data: Date; luogo?: string }
+const { src = '', titolo, data, luogo = '' } = Astro.props;
+---
+{src ? (
+  <img class="locandina" src={src} alt={`Locandina: ${semplice(titolo)}`} loading="lazy" decoding="async" />
+) : (
+  <div class="locandina locandina--tipografica" aria-hidden="true">
+    <span class="su">Premio Muricello</span>
+    <span class="titolo">{semplice(titolo)}</span>
+    <span class="giu">{dataLunga(data)}{luogo && <><br />{luogo}</>}</span>
+  </div>
+)}

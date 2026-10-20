@@ -1,0 +1,31 @@
+---
+import sito from '../data/sito.json';
+const anno = new Date().getFullYear();
+---
+<footer class="piede" aria-labelledby="piede-contatti">
+  <div class="contenitore">
+    <div class="piede__riga">
+      <div style="flex: 1 1 320px;">
+        <div class="marchio__sopra">Associazione culturale</div>
+        <div class="marchio__nome">Muricello</div>
+        <p class="piccolo sommesso" style="margin-top: 18px; max-width: 22em;">Cultura, memoria e impegno civile da San Mango d'Aquino, dal 2013.</p>
+      </div>
+      <div style="flex: 1 1 240px;">
+        <h2 id="piede-contatti">Contatti</h2>
+        <address>
+          {sito.indirizzo}<br />
+          {sito.cap} {sito.comune} ({sito.provincia})<br />
+          <a href={`mailto:${sito.email}`}>{sito.email}</a>
+        </address>
+      </div>
+      <div style="flex: 1 1 200px;">
+        <h2>Seguici</h2>
+        <a class="link-piede" href={sito.facebook} rel="noopener">Facebook</a>
+      </div>
+    </div>
+    <div class="piede__fondo">
+      <span>{sito.nome}, C.F. {sito.codiceFiscale}</span>
+      <span>© {anno} {sito.nome}</span>
+    </div>
+  </div>
+</footer>

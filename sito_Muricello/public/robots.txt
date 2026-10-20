@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://muricello.it/sitemap-index.xml

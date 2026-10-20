@@ -1,0 +1,39 @@
+---
+interface Props { attivo?: string }
+const { attivo = '' } = Astro.props;
+
+const voci = [
+  { chiave: 'edizioni', href: '/edizioni/', testo: 'Edizioni' },
+  { chiave: 'eventi', href: '/eventi/', testo: 'Eventi' },
+  { chiave: 'gallery', href: '/gallery/', testo: 'Gallery' },
+  { chiave: 'news', href: '/news/', testo: 'News' },
+  { chiave: 'associazione', href: '/associazione/', testo: 'Associazione' },
+  { chiave: 'contatti', href: '/contatti/', testo: 'Contatti' },
+];
+const corrente = (chiave: string, href: string) =>
+  attivo === chiave ? (Astro.url.pathname === href ? 'page' : 'true') : undefined;
+---
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+<header class="testata">
+  <div class="contenitore testata__riga">
+    <a href="/" class="marchio" aria-label="Associazione culturale Muricello, vai alla home">
+      <span class="marchio__sopra">Associazione culturale</span>
+      <span class="marchio__nome">Muricello</span>
+    </a>
+    <nav aria-label="Principale" class="menu">
+      <ul class="menu__desktop">
+        {voci.map((v) => (
+          <li><a href={v.href} aria-current={corrente(v.chiave, v.href)}>{v.testo}</a></li>
+        ))}
+      </ul>
+      <details class="menu__mobile">
+        <summary><span class="apri">Menu</span><span class="chiudi">Chiudi</span></summary>
+        <ul>
+          {voci.map((v) => (
+            <li><a href={v.href} aria-current={corrente(v.chiave, v.href)}>{v.testo}</a></li>
+          ))}
+        </ul>
+      </details>
+    </nav>
+  </div>
+</header>

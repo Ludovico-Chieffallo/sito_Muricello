@@ -1,0 +1,60 @@
+{
+  "anno": 2026,
+  "numero": "XIV",
+  "ordinale": "Quattordicesima",
+  "data": "25 luglio 2026",
+  "luogo": "San Mango d'Aquino",
+  "tema": "Il diritto alla ricerca della felicità",
+  "racconto": "Un'edizione ponte, nelle parole del presidente Antonio Chieffallo: cinque opere finaliste raccontate dagli autori in un talk, la nascita del Premio Muricello Poesia, una sezione dedicata alla memoria di Aldo Grandinetti e la presentazione del *Manoscritto dei poeti*.",
+  "copertina": "",
+  "premi": [
+    {
+      "sezione": "Premio letterario",
+      "nome": "Eliana Iorfida",
+      "opera": "Montagnammare",
+      "editore": "Pellegrini Editore",
+      "ruolo": "",
+      "motivazione": "Scrittrice e archeologa, vince con un romanzo storico costruito tra ricerca e immaginazione, che restituisce una Calabria inedita. Il cavallo alato le è stato consegnato da Olimpio Talarico, tra i fondatori del Premio Caccuri.",
+      "foto": ""
+    },
+    {
+      "sezione": "Premio Muricello, sezione impegno civile",
+      "nome": "[Nome del premiato]",
+      "opera": "",
+      "editore": "",
+      "ruolo": "[Ruolo o attività]",
+      "motivazione": "[Motivazione del premio, in due o tre righe]",
+      "foto": ""
+    },
+    {
+      "sezione": "Premio Muricello Poesia",
+      "nome": "Mario Saccomanno",
+      "opera": "Rimango fedele alla terra",
+      "editore": "Interno Libri",
+      "ruolo": "",
+      "motivazione": "Il primo vincitore del Premio Muricello Poesia, istituito con questa edizione e affidato a una giuria dedicata.",
+      "foto": ""
+    }
+  ],
+  "citazione": {
+    "testo": "Il mio romanzo racconta una Calabria inedita e nasce da una storia in una storia, da vicende scoperte per caso.",
+    "autore": "Eliana Iorfida, vincitrice del Premio letterario"
+  },
+  "finalistiIntro": "Le cinque opere scelte dalla giuria letteraria, presentate dagli autori nel talk che ha aperto la serata.",
+  "finalisti": [
+    { "autore": "Eliana Iorfida", "opera": "Montagnammare", "editore": "Pellegrini Editore", "nota": "", "copertina": "", "vincitore": true },
+    { "autore": "Pasquale Allegro", "opera": "Se ritieni che sia giusto", "editore": "Arkadia", "nota": "Presentato in dialogo con la scrittrice Daniela Grandinetti.", "copertina": "", "vincitore": false },
+    { "autore": "Gabriella Lax e Andrea Puglisi", "opera": "Un'alba nuova. Lettere dal fronte al manicomio (1915-1917)", "editore": "Castelvecchi", "nota": "", "copertina": "", "vincitore": false },
+    { "autore": "Massimo Salvati", "opera": "Oblio mucido", "editore": "Alter Ego Edizioni", "nota": "", "copertina": "", "vincitore": false },
+    { "autore": "Massimo Felice Nisticò", "opera": "All Inclusive", "editore": "Rubbettino", "nota": "", "copertina": "", "vincitore": false }
+  ],
+  "momentiTitolo": "La serata",
+  "momentiIntro": "Condotta dalla giornalista Rosita Mercatante, la serata ha intrecciato libri, memoria e musica.",
+  "momenti": [
+    { "titolo": "Sezione Memoria Aldo Grandinetti", "testo": "Un momento dedicato ad Aldo Grandinetti, giovane imprenditore di San Mango d'Aquino scomparso prematuramente, il cui legame con la comunità resta vivo." },
+    { "titolo": "Il manoscritto dei poeti", "testo": "Presentato il volume in copia unica che raccoglie poesie manoscritte dei principali poeti calabresi contemporanei, custodito nella Biblioteca Nuccio Ordine di San Mango d'Aquino." },
+    { "titolo": "Ricordo di Sharo Gambino", "testo": "Sergio Gambino ha ricordato il contributo intellettuale del padre, lo scrittore Sharo Gambino." },
+    { "titolo": "Le poesie di Franco Costabile in musica", "testo": "Un album di composizioni tratte dai versi di Franco Costabile, in dialogo tra musica e parola." },
+    { "titolo": "Un ritratto di Nuccio Ordine", "testo": "Presentato il ritratto del professor Nuccio Ordine, a cui è intitolata la biblioteca del paese." }
+  ]
+}

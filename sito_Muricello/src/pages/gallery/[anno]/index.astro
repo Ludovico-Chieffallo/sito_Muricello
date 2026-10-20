@@ -1,0 +1,54 @@
+---
+import Base from '../../../layouts/Base.astro';
+import BarraAnni from '../../../components/BarraAnni.astro';
+import { edizioni, eventi, type Edizione } from '../../../lib/dati';
+import { inline, dataLunga } from '../../../lib/testo';
+
+export async function getStaticPaths() {
+  const tutte = await edizioni();
+  return tutte.map((e) => ({ params: { anno: String(e.anno) }, props: { e } }));
+}
+
+interface Props { e: Edizione }
+const { e } = Astro.props;
+const tutte = await edizioni();
+const album = (await eventi()).filter((ev) => ev.anno === e.anno && ev.foto.length > 0);
+---
+<Base titolo={`Gallery ${e.anno}`} attivo="gallery" descrizione={`Le fotografie della ${e.ordinale.toLowerCase()} edizione del Premio Muricello, ${e.anno}.`}>
+  <div class="contenitore" style="padding-bottom: var(--spazio-sezione);">
+    <nav class="percorso" aria-label="Percorso">
+      <a href="/gallery/">Gallery</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{e.anno}</span>
+    </nav>
+    <BarraAnni anni={tutte} corrente={e.anno} base="/gallery/" etichetta="Gallery per anno" />
+
+    <section class="testa-edizione" aria-labelledby="titolo-anno">
+      <div class="numerale numerale--grande" aria-hidden="true">{e.numero}</div>
+      <div class="testa-edizione__testo">
+        <h1 id="titolo-anno" style="font-size: clamp(44px, 5.4vw, 76px);">Gallery {e.anno}</h1>
+        <p class="sommesso" style="margin-top: 14px;">Un album per ogni evento della {e.ordinale.toLowerCase()} edizione.</p>
+      </div>
+    </section>
+
+    {album.length === 0 ? (
+      <p class="in-preparazione">Le fotografie di quest'anno sono in preparazione. Intanto puoi leggere <a href={`/eventi/${e.anno}/`}>gli eventi del {e.anno}</a>.</p>
+    ) : (
+      <ul class="lista-pulita griglia" style="border-top: 1px solid var(--linea); padding-top: 48px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 56px 40px;">
+        {album.map((a) => (
+          <li>
+            <a class="album" href={`/gallery/${e.anno}/${a.slug}/`}>
+              <span class="mosaico" aria-hidden="true">
+                {a.foto.slice(0, 3).map((f) => <img src={f} alt="" loading="lazy" />)}
+                {Array.from({ length: Math.max(0, 3 - a.foto.length) }).map(() => <span></span>)}
+              </span>
+              <span class="etichetta" style="display: block; margin-top: 18px;">{dataLunga(a.data)}</span>
+              <span class="album__titolo" set:html={inline(a.titolo)} />
+              <span class="piccolo sommesso" style="display: block; margin-top: 6px;">{a.foto.length === 1 ? '1 fotografia' : `${a.foto.length} fotografie`}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Base>

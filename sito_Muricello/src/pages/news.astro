@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import sito from '../data/sito.json';
+import news from '../data/news.json';
+import { inline, semplice, blocchi, dataLunga } from '../lib/testo';
+
+const data = new Date(news.data);
+const corpo = blocchi(news.testo);
+---
+<Base titolo={news.titolo} attivo="news" descrizione={semplice(news.sommario)} immagine={news.immagine}>
+  <article aria-labelledby="titolo-notizia">
+    <header class="contenitore contenitore--stretto" style="padding-block: clamp(56px, 8vw, 104px) 48px;">
+      <p class="sommesso" style="font-size: 17px;"><time datetime={news.data}>{dataLunga(data)}</time></p>
+      <h1 id="titolo-notizia" style="margin-top: 16px; font-family: var(--titoli); font-weight: 500; font-size: clamp(40px, 5.2vw, 72px); line-height: 1.05;">{news.titolo}</h1>
+      <p style="margin-top: 24px; font-size: clamp(20px, 1.7vw, 24px); line-height: 1.5;" set:html={inline(news.sommario)} />
+    </header>
+
+    {news.immagine && (
+      <figure class="contenitore">
+        <img class="foto" src={news.immagine} alt={news.didascalia} style="aspect-ratio: 16 / 9;" />
+        {news.didascalia && <figcaption>{news.didascalia}</figcaption>}
+      </figure>
+    )}
+
+    <div class="contenitore contenitore--stretto articolo" style="padding-block: 56px var(--spazio-sezione);">
+      {corpo.map((b) =>
+        b.tipo === 'citazione' ? (
+          <blockquote>
+            <p set:html={b.html} />
+            {b.autore && <footer set:html={b.autore} />}
+          </blockquote>
+        ) : (
+          <p set:html={b.html} />
+        ),
+      )}
+      <div class="azioni" style="margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--linea);">
+        {news.link && <a class="bottone" href={news.link}>{news.linkTesto || 'Approfondisci'}</a>}
+        <a class="link" style="font-size: 17px;" href={sito.facebook} rel="noopener">Segui il Premio su Facebook</a>
+      </div>
+    </div>
+  </article>
+</Base>

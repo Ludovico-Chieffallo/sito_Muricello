@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { edizioni, eventi } from '../../lib/dati';
+
+const anni = await edizioni();
+const tutti = await eventi();
+const albumDi = (anno: number) => tutti.filter((e) => e.anno === anno && e.foto.length > 0);
+---
+<Base titolo="Gallery" attivo="gallery" descrizione="Le fotografie del Premio Muricello, edizione per edizione: un album per ogni evento.">
+  <div class="contenitore" style="padding-bottom: var(--spazio-sezione);">
+    <section style="padding-block: clamp(56px, 8vw, 104px) clamp(40px, 5vw, 64px);" aria-labelledby="titolo-gallery">
+      <h1 id="titolo-gallery" class="titolo-pagina">Gallery</h1>
+      <p class="introduzione" style="margin-top: 24px;">Le fotografie del Premio, edizione per edizione. Ogni anno raccoglie un album per ciascun evento.</p>
+    </section>
+    <ul class="lista-pulita griglia" style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 48px 32px;">
+      {anni.map((a) => {
+        const album = albumDi(a.anno);
+        const copertina = album[0]?.foto[0];
+        return (
+          <li>
+            <a class="album" href={`/gallery/${a.anno}/`}>
+              {copertina
+                ? <img class="foto" src={copertina} alt="" loading="lazy" style="aspect-ratio: 4 / 3;" />
+                : <span class="foto" aria-hidden="true" style="display: block; aspect-ratio: 4 / 3; background: var(--pietra-tenue);"></span>}
+              <span style="display: flex; align-items: baseline; gap: 14px; margin-top: 14px;">
+                <span class="numerale" aria-hidden="true" style="font-size: 32px; line-height: 1;">{a.numero}</span>
+                <span class="album__titolo" style="font-family: var(--testo); font-size: 22px; font-weight: 600; margin: 0;">{a.anno}</span>
+              </span>
+              <span class="piccolo sommesso" style="display: block; margin-top: 2px;">
+                {album.length === 0 ? 'In preparazione' : album.length === 1 ? '1 album' : `${album.length} album`}
+              </span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</Base>

@@ -1,0 +1,58 @@
+---
+import '@fontsource-variable/bodoni-moda/opsz.css';
+import '@fontsource-variable/bodoni-moda/opsz-italic.css';
+import '@fontsource/spectral/400.css';
+import '@fontsource/spectral/400-italic.css';
+import '@fontsource/spectral/500.css';
+import '@fontsource/spectral/600.css';
+import '../styles/global.css';
+import Testata from '../components/Testata.astro';
+import Piede from '../components/Piede.astro';
+import sito from '../data/sito.json';
+
+interface Props {
+  titolo?: string;
+  descrizione?: string;
+  attivo?: string;
+  immagine?: string;
+  datiStrutturati?: Record<string, unknown>;
+}
+
+const { titolo, descrizione = sito.descrizione, attivo = '', immagine = '', datiStrutturati } = Astro.props;
+const titoloCompleto = titolo
+  ? `${titolo} | Premio Muricello`
+  : "Premio Muricello | Associazione culturale Muricello, San Mango d'Aquino";
+const canonico = new URL(Astro.url.pathname, Astro.site).href;
+const immagineAssoluta = immagine ? new URL(immagine, Astro.site).href : '';
+---
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titoloCompleto}</title>
+    <meta name="description" content={descrizione} />
+    <link rel="canonical" href={canonico} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#E9E3D8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:site_name" content="Premio Muricello" />
+    <meta property="og:title" content={titolo ?? 'Premio Muricello'} />
+    <meta property="og:description" content={descrizione} />
+    <meta property="og:url" content={canonico} />
+    {immagineAssoluta && <meta property="og:image" content={immagineAssoluta} />}
+    <meta name="twitter:card" content={immagineAssoluta ? 'summary_large_image' : 'summary'} />
+    {datiStrutturati && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(datiStrutturati)} />
+    )}
+  </head>
+  <body>
+    <Testata attivo={attivo} />
+    <main id="contenuto">
+      <slot />
+    </main>
+    <Piede />
+  </body>
+</html>

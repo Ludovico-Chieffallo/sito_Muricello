@@ -1,0 +1,91 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { eventi, type Evento } from '../../../lib/dati';
+import { inline, semplice, dataLunga } from '../../../lib/testo';
+
+export async function getStaticPaths() {
+  const tutti = await eventi();
+  return tutti
+    .filter((ev) => ev.foto.length > 0)
+    .map((ev) => ({ params: { anno: String(ev.anno), evento: ev.slug }, props: { ev } }));
+}
+
+interface Props { ev: Evento }
+const { ev } = Astro.props;
+const titolo = semplice(ev.titolo);
+---
+<Base titolo={`${titolo}, fotografie`} attivo="gallery" descrizione={`Le fotografie di ${titolo}, ${dataLunga(ev.data)}.`} immagine={ev.foto[0]}>
+  <div class="contenitore" style="padding-bottom: var(--spazio-sezione);">
+    <nav class="percorso" aria-label="Percorso">
+      <a href="/gallery/">Gallery</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/gallery/${ev.anno}/`}>{ev.anno}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{titolo}</span>
+    </nav>
+
+    <section class="affiancati affiancati--fondo" style="padding-block: clamp(32px, 5vw, 64px) clamp(32px, 4vw, 48px); gap: 24px 56px; justify-content: space-between;" aria-labelledby="titolo-album">
+      <div style="flex: 1 1 520px; min-width: 0;">
+        <p class="etichetta" style="font-size: 17px;">{dataLunga(ev.data)}</p>
+        <h1 id="titolo-album" style="margin-top: 8px; font-family: var(--titoli); font-weight: 500; font-size: clamp(40px, 4.8vw, 66px); line-height: 1.05;" set:html={inline(ev.titolo)} />
+        {ev.luogo && <p class="sommesso" style="margin-top: 12px;">{ev.luogo}</p>}
+      </div>
+      <div class="azioni" style="gap: 8px 28px;">
+        <a class="link" style="font-size: 17px;" href={`/eventi/${ev.anno}/#${ev.slug}`}>Locandina e descrizione</a>
+        <a class="bottone bottone--bordo" href={`/gallery/${ev.anno}/`}>Tutti gli album del {ev.anno}</a>
+      </div>
+    </section>
+
+    <ul class="foto-griglia">
+      {ev.foto.map((f, i) => (
+        <li>
+          <a href={f} data-indice={i} aria-label={`Apri la fotografia ${i + 1} di ${ev.foto.length}`}>
+            <img src={f} alt="" loading={i < 6 ? 'eager' : 'lazy'} decoding="async" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <dialog class="lightbox" aria-label="Fotografia ingrandita">
+    <div class="lightbox__dentro">
+      <img src="" alt="" />
+      <button type="button" class="chiudi">Chiudi</button>
+      <button type="button" class="prec" aria-label="Fotografia precedente">‹</button>
+      <button type="button" class="succ" aria-label="Fotografia successiva">›</button>
+      <p class="contatore" aria-live="polite"></p>
+    </div>
+  </dialog>
+</Base>
+
+<script>
+  const dialogo = document.querySelector<HTMLDialogElement>('.lightbox');
+  const link = Array.from(document.querySelectorAll<HTMLAnchorElement>('.foto-griglia a'));
+  if (dialogo && link.length) {
+    const img = dialogo.querySelector('img')!;
+    const contatore = dialogo.querySelector('.contatore')!;
+    let indice = 0;
+    const mostra = (i: number) => {
+      indice = (i + link.length) % link.length;
+      img.src = link[indice].href;
+      contatore.textContent = `${indice + 1} di ${link.length}`;
+    };
+    link.forEach((a, i) =>
+      a.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        mostra(i);
+        dialogo.showModal();
+      }),
+    );
+    dialogo.querySelector('.chiudi')!.addEventListener('click', () => dialogo.close());
+    dialogo.querySelector('.prec')!.addEventListener('click', () => mostra(indice - 1));
+    dialogo.querySelector('.succ')!.addEventListener('click', () => mostra(indice + 1));
+    dialogo.addEventListener('keydown', (ev) => {
+      if (ev.key === 'ArrowLeft') mostra(indice - 1);
+      if (ev.key === 'ArrowRight') mostra(indice + 1);
+    });
+    dialogo.addEventListener('click', (ev) => {
+      if (ev.target === dialogo || ev.target === dialogo.firstElementChild) dialogo.close();
+    });
+  }
+</script>
